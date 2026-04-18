@@ -3,18 +3,18 @@ import { useState, useEffect } from "react";
 const WHATSAPP = "919949682097";
 
 const products = [
-  { id:1,  name:"Seer Fish (Vanjaram)",  weight:"500g", price:449, tag:"Bestseller",  cat:"Fresh Fish",    img:"https://cambaytiger.com/cdn/shop/files/SeerFish_1_0c2a8f10-0148-4d3d-9aca-b9bc875d2a14.jpg?v=1714978055", desc:"Cleaned & cut, pulusu-ready" },
-  { id:3,  name:"Pomfret (Whole)",       weight:"500g", price:549, tag:"Premium",     cat:"Fresh Fish",    img:"https://www.bigbasket.com/media/uploads/p/xxl/40117160_4-fresho-pomfret-white-fish-large-cleaned-whole.jpg", desc:"Tawa-ready, slit & cleaned" },
-  { id:14, name:"Kingfish / Surmai",     weight:"500g", price:399, tag:"Fresh Today", cat:"Fresh Fish",    img:"https://sealiciousfoods.com/wp-content/uploads/2022/01/king-fish.jpg", desc:"Firm flesh, fry or curry cut" },
-  { id:15, name:"Tuna",                  weight:"500g", price:479, tag:"",            cat:"Fresh Fish",    img:"https://www.bigbasket.com/media/uploads/p/xxl/40178135_3-fresho-tuna-fish-steak-slice.jpg", desc:"Steak-cut, grill or curry" },
-  { id:16, name:"Silver Pomfret",        weight:"500g", price:599, tag:"Premium",     cat:"Fresh Fish",    img:"https://www.spmbfisheries.in/wp-content/uploads/2019/01/silverpomfret.jpg", desc:"Whole cleaned, tawa-ready" },
-  { id:17, name:"Lobster",               weight:"500g", price:999, tag:"🔥 Special",  cat:"Fresh Fish",    img:"https://adamseafood.com/cdn/shop/products/FRESHINDIANLOBSTERSMALL_1080x.jpg", desc:"Fresh, whole — pre-order advised" },
-  { id:8,  name:"Squid (Cleaned)",       weight:"300g", price:349, tag:"",            cat:"Prawns & Crab", img:"https://nuste.in/cdn/shop/files/SquidRings_1.jpg?v=1688623887", desc:"Cleaned, ring-cut, fry-ready" },
-  { id:9,  name:"Tiger Prawns",          weight:"500g", price:699, tag:"Premium",     cat:"Prawns & Crab", img:"https://www.bigbasket.com/media/uploads/p/xxl/40227539_3-fresho-tiger-prawns-cleaned-deveined-with-tail.jpg", desc:"Fresh, large, deveined" },
-  { id:10, name:"Medium Prawns",         weight:"500g", price:399, tag:"",            cat:"Prawns & Crab", img:"https://cambaytiger.com/cdn/shop/files/MediumPrawns.jpg", desc:"Cleaned & deveined" },
-  { id:11, name:"Small Prawns",          weight:"500g", price:299, tag:"",            cat:"Prawns & Crab", img:"https://cambaytiger.com/cdn/shop/files/SmallPrawns.jpg", desc:"Cleaned, fry or curry use" },
-  { id:12, name:"Mud Crab",              weight:"500g", price:649, tag:"Fresh Today", cat:"Prawns & Crab", img:"https://www.bigbasket.com/media/uploads/p/xxl/40218950_3-fresho-mud-crab-cut-cleaned.jpg", desc:"Live-to-cleaned, same morning" },
-  { id:13, name:"Blue Swimming Crab",    weight:"500g", price:449, tag:"",            cat:"Prawns & Crab", img:"https://cambaytiger.com/cdn/shop/files/BlueCrab.jpg", desc:"Cleaned, curry-cut" },
+  { id:1,  name:"Seer Fish (Vanjaram)",  telugu:"వంజరం చేప",   weight:"500g", tag:"Bestseller",  cat:"Fresh Fish",    img:"https://i.ibb.co/bj5DnHKr/Seer-Fish-Vanjaram.png",   desc:"Cleaned & cut, pulusu-ready" },
+  { id:3,  name:"Pomfret (Whole)",       telugu:"చందవ చేప",    weight:"500g", tag:"Premium",     cat:"Fresh Fish",    img:"https://i.ibb.co/pvtdsry2/Pomfret-Whole.png",        desc:"Tawa-ready, slit & cleaned" },
+  { id:18, name:"Konam Fish (Barracuda)",telugu:"కోనం చేప",    weight:"500g", tag:"Fresh Today", cat:"Fresh Fish",    img:"https://i.ibb.co/N6HRm9q9/Konam-fish.png",           desc:"Firm flesh, fry or curry cut" },
+  { id:15, name:"Tuna",                  telugu:"తూన చేప",     weight:"500g", tag:"",            cat:"Fresh Fish",    img:"https://i.ibb.co/DHYTFGDC/Tuna.png",                 desc:"Steak-cut, grill or curry" },
+  { id:16, name:"Silver Pomfret",        telugu:"వెండి చందవ",  weight:"500g", tag:"Premium",     cat:"Fresh Fish",    img:"https://i.ibb.co/NdJ4ggK7/Silver-Pomfret.png",       desc:"Whole cleaned, tawa-ready" },
+  { id:17, name:"Lobster",               telugu:"లాబ్స్టర్",   weight:"500g", tag:"🔥 Special",  cat:"Fresh Fish",    img:"https://i.ibb.co/qFC3MczJ/Lobster.png",              desc:"Fresh, whole — pre-order advised" },
+  { id:8,  name:"Squid (Cleaned)",       telugu:"కుండ చేప",    weight:"300g", tag:"",            cat:"Prawns & Crab", img:"https://i.ibb.co/bgh1NW7v/Squid-Cleaned.png",        desc:"Cleaned, ring-cut, fry-ready" },
+  { id:9,  name:"Tiger Prawns",          telugu:"పెద్ద రొయ్యలు",weight:"500g", tag:"Premium",   cat:"Prawns & Crab", img:"https://i.ibb.co/3ms6KB7P/Tiger-Prawns.png",          desc:"Fresh, large, deveined" },
+  { id:10, name:"Medium Prawns",         telugu:"మధ్యస్థ రొయ్యలు",weight:"500g", tag:"",        cat:"Prawns & Crab", img:"https://i.ibb.co/gknnDbV/Medium-Prawns.png",          desc:"Cleaned & deveined" },
+  { id:11, name:"Small Prawns",          telugu:"చిన్న రొయ్యలు",weight:"500g", tag:"",          cat:"Prawns & Crab", img:"https://i.ibb.co/GfkRzp6s/small-prawns.png",          desc:"Cleaned, fry or curry use" },
+  { id:12, name:"Mud Crab",              telugu:"బురద పీత",    weight:"500g", tag:"Fresh Today", cat:"Prawns & Crab", img:"https://www.bigbasket.com/media/uploads/p/xxl/40218950_3-fresho-mud-crab-cut-cleaned.jpg", desc:"Live-to-cleaned, same morning" },
+  { id:13, name:"Blue Swimming Crab",    telugu:"నీలి పీత",    weight:"500g", tag:"",            cat:"Prawns & Crab", img:"https://cambaytiger.com/cdn/shop/files/BlueCrab.jpg",  desc:"Cleaned, curry-cut" },
 ];
 
 const cats = ["All", "Fresh Fish", "Prawns & Crab"];
@@ -54,7 +54,7 @@ export default function DhanushyaSeafoods() {
   return (
     <div style={{ fontFamily:"'Cormorant Garamond','Georgia',serif", background:"#FDFAF6", color:"#1A2E2A", minHeight:"100vh", overflowX:"hidden" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Noto+Sans+Telugu:wght@400;600&display=swap');
         *{box-sizing:border-box;margin:0;padding:0;}
         html{scroll-behavior:smooth;}
         ::-webkit-scrollbar{width:5px;}
@@ -326,7 +326,8 @@ export default function DhanushyaSeafoods() {
                 )}
               </div>
               <div style={{padding:"18px 18px 20px"}}>
-                <div style={{fontSize:16,fontWeight:700,color:"#1A2E2A",marginBottom:3}}>{p.name}</div>
+                <div style={{fontSize:16,fontWeight:700,color:"#1A2E2A",marginBottom:2}}>{p.name}</div>
+                <div style={{fontSize:13,color:"#0D9488",marginBottom:3,fontFamily:"'Noto Sans Telugu',sans-serif"}}>{p.telugu}</div>
                 <div className="sans" style={{fontSize:12,color:"#9ABAB6",marginBottom:4}}>{p.weight}</div>
                 <div className="sans" style={{fontSize:12,color:"#7A9E9A",marginBottom:16,lineHeight:1.6}}>{p.desc}</div>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
