@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
-const WHATSAPP = "919949682097";
+const WHATSAPP = "919999999999";
 
 const products = [
   { id:1,  name:"Seer Fish (Vanjaram)",  weight:"500g", price:449, tag:"Bestseller",  cat:"Fresh Fish",    img:"https://cambaytiger.com/cdn/shop/files/SeerFish_1_0c2a8f10-0148-4d3d-9aca-b9bc875d2a14.jpg?v=1714978055", desc:"Cleaned & cut, pulusu-ready" },
@@ -20,8 +20,6 @@ const products = [
 const cats = ["All", "Fresh Fish", "Prawns & Crab"];
 
 export default function DhanushyaSeafoods() {
-  const [cart, setCart] = useState({});
-  const [cartOpen, setCartOpen] = useState(false);
   const [activeCat, setActiveCat] = useState("All");
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState({});
@@ -41,19 +39,6 @@ export default function DhanushyaSeafoods() {
     document.querySelectorAll("[data-id]").forEach(el => io.observe(el));
     return () => io.disconnect();
   }, []);
-
-  const add = id => setCart(c => ({ ...c, [id]: (c[id]||0)+1 }));
-  const rem = id => setCart(c => { const n={...c}; n[id]>1 ? n[id]-- : delete n[id]; return n; });
-
-  const items = Object.entries(cart).map(([id,qty]) => ({ ...products.find(p=>p.id===+id), qty }));
-  const total = items.reduce((s,i) => s+i.price*i.qty, 0);
-  const count = items.reduce((s,i) => s+i.qty, 0);
-
-  const waOrder = () => {
-    const lines = items.map(i=>`• ${i.name} (${i.weight}) x${i.qty} = ₹${i.price*i.qty}`).join("\n");
-    const msg = `Hi Dhanushya Seafoods! 🐟\n\nMy order:\n${lines}\n\n*Total: ₹${total}*\n\nPlease confirm delivery slot.`;
-    window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`,"_blank");
-  };
 
   const filtered = activeCat==="All" ? products : products.filter(p=>p.cat===activeCat);
 
@@ -155,28 +140,12 @@ export default function DhanushyaSeafoods() {
             <a key={l} className="nav-link" href={`#${l.toLowerCase()}`}>{l}</a>
           ))}
         </div>
-        <button onClick={()=>setCartOpen(true)} style={{
-          display:"flex",alignItems:"center",gap:10,padding:"9px 18px",
-          background:"transparent",border:"1.5px solid rgba(13,148,136,0.3)",
-          borderRadius:50,cursor:"pointer",transition:"all 0.3s",
-          color:"#1A2E2A",fontFamily:"'DM Sans',sans-serif",fontSize:13,
-        }}
-        onMouseEnter={e=>{e.currentTarget.style.borderColor="#0D9488";e.currentTarget.style.background="rgba(13,148,136,0.05)";}}
-        onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(13,148,136,0.3)";e.currentTarget.style.background="transparent";}}>
-          {/* Mini bucket icon in nav */}
-          <div style={{position:"relative",width:22,height:26}}>
-            <div style={{width:16,height:6,border:"2px solid #8B6914",borderBottom:"none",borderRadius:"8px 8px 0 0",margin:"0 auto",position:"relative",top:2}}/>
-            <div style={{width:22,height:18,background:"linear-gradient(160deg,#E8B84B,#C8960A)",borderRadius:"3px 3px 7px 7px",border:"1.5px solid #A87A08",position:"relative",overflow:"hidden"}}>
-              <div style={{position:"absolute",bottom:0,left:0,right:0,height:`${Math.min(100,count*20)}%`,background:"rgba(13,148,136,0.6)",borderRadius:"0 0 5px 5px",transition:"height 0.3s"}}/>
-            </div>
-          </div>
-          <span className="sans">Catch</span>
-          {count>0&&(
-            <span style={{background:"#0D9488",color:"white",borderRadius:"50%",width:20,height:20,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:700}}>
-              {count}
-            </span>
-          )}
-        </button>
+        <div style={{display:"flex",gap:12,alignItems:"center"}}>
+          <a href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hi! Please share today's catch and prices 🐟")}`} target="_blank" rel="noreferrer"
+            style={{display:"flex",alignItems:"center",gap:8,padding:"9px 20px",background:"#25D366",borderRadius:50,color:"white",textDecoration:"none",fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:500}}>
+            💬 Today's Rates
+          </a>
+        </div>
       </nav>
 
       {/* ── HERO ── */}
@@ -309,12 +278,28 @@ export default function DhanushyaSeafoods() {
         </div>
       </section>
 
-      {/* ── MENU ── */}
       <section id="menu" style={{padding:"80px 8%",background:"#FDFAF6"}}>
         <div {...reveal("menu-hdr")} style={{textAlign:"center",marginBottom:40}}>
           <div className="sans" style={{fontSize:11,letterSpacing:5,color:"#0D9488",marginBottom:10,fontWeight:600}}>FRESH TODAY</div>
           <h2 style={{fontSize:36,fontWeight:700,color:"#1A2E2A"}}>Today's Catch</h2>
-          <p className="sans" style={{fontSize:14,color:"#6A8E8A",marginTop:10}}>All prices per 500g unless noted · Cleaned & cut to order</p>
+          <p className="sans" style={{fontSize:14,color:"#6A8E8A",marginTop:10,marginBottom:20}}>Cleaned & cut to order · All items subject to availability</p>
+          {/* WhatsApp rates banner */}
+          <div style={{
+            display:"inline-flex",alignItems:"center",gap:12,
+            background:"#F0FAF8",border:"1.5px solid rgba(13,148,136,0.2)",
+            borderRadius:16,padding:"14px 24px",marginBottom:8,
+          }}>
+            <span style={{fontSize:22}}>🐟</span>
+            <div style={{textAlign:"left"}}>
+              <div className="sans" style={{fontSize:13,fontWeight:600,color:"#1A2E2A"}}>Prices change daily based on harbour catch</div>
+              <div className="sans" style={{fontSize:12,color:"#6A8E8A",marginTop:2}}>WhatsApp us every morning for today's rates & availability</div>
+            </div>
+            <a href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hi! Please share today's catch and prices 🐟")}`}
+              target="_blank" rel="noreferrer"
+              style={{display:"flex",alignItems:"center",gap:6,padding:"9px 18px",background:"#25D366",borderRadius:50,color:"white",textDecoration:"none",fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:500,whiteSpace:"nowrap"}}>
+              💬 Get Today's Rates
+            </a>
+          </div>
         </div>
         <div style={{display:"flex",gap:10,justifyContent:"center",marginBottom:40,flexWrap:"wrap"}}>
           {cats.map(c=>(
@@ -345,18 +330,15 @@ export default function DhanushyaSeafoods() {
                 <div className="sans" style={{fontSize:12,color:"#9ABAB6",marginBottom:4}}>{p.weight}</div>
                 <div className="sans" style={{fontSize:12,color:"#7A9E9A",marginBottom:16,lineHeight:1.6}}>{p.desc}</div>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                  <span style={{fontSize:22,fontWeight:700,color:"#0D9488"}}>₹{p.price}</span>
-                  {cart[p.id] ? (
-                    <div style={{display:"flex",alignItems:"center",gap:8}}>
-                      <button className="qty-btn" onClick={()=>rem(p.id)}>−</button>
-                      <span className="sans" style={{fontSize:15,fontWeight:600,minWidth:20,textAlign:"center",color:"#1A2E2A"}}>{cart[p.id]}</span>
-                      <button className="qty-btn" onClick={()=>add(p.id)}>+</button>
-                    </div>
-                  ):(
-                    <button className="btn-teal" style={{padding:"8px 18px",fontSize:13}} onClick={()=>add(p.id)}>
-                      Add +
-                    </button>
-                  )}
+                  <div>
+                    <div className="sans" style={{fontSize:10,color:"#9ABAB6",letterSpacing:1}}>TODAY'S PRICE</div>
+                    <div className="sans" style={{fontSize:13,fontWeight:600,color:"#0D9488"}}>WhatsApp to enquire</div>
+                  </div>
+                  <a href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Hi! I'm interested in ${p.name} (${p.weight}). What's today's price and availability? 🐟`)}`}
+                    target="_blank" rel="noreferrer"
+                    style={{display:"flex",alignItems:"center",gap:6,padding:"8px 14px",background:"#25D366",borderRadius:50,color:"white",textDecoration:"none",fontFamily:"'DM Sans',sans-serif",fontSize:12,fontWeight:500}}>
+                    💬 Order
+                  </a>
                 </div>
               </div>
             </div>
@@ -537,113 +519,8 @@ export default function DhanushyaSeafoods() {
         </div>
       </footer>
 
-      {/* ── CART DRAWER (Fishing Bucket Theme) ── */}
-      {cartOpen&&<div className="overlay" onClick={()=>setCartOpen(false)}/>}
-      <div style={{
-        position:"fixed",right:0,top:0,bottom:0,width:420,
-        background:"#FDFAF6",zIndex:50,
-        transform:cartOpen?"translateX(0)":"translateX(100%)",
-        transition:"transform 0.35s cubic-bezier(0.4,0,0.2,1)",
-        display:"flex",flexDirection:"column",
-        borderLeft:"1px solid rgba(13,148,136,0.15)",
-        boxShadow:"-16px 0 50px rgba(0,0,0,0.1)",
-      }}>
-        {/* Cart header - big bucket visual */}
-        <div style={{padding:"24px 24px 20px",borderBottom:"1px solid rgba(13,148,136,0.1)",background:"linear-gradient(135deg,#F0FAF8,#E6F7F5)"}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-            <div>
-              <div style={{fontSize:20,fontWeight:700,color:"#1A2E2A",marginBottom:2}}>Your Catch</div>
-              <div className="sans" style={{fontSize:12,color:"#0D9488"}}>{count} item{count!==1?"s":""} in the bucket</div>
-            </div>
-            <button onClick={()=>setCartOpen(false)} style={{background:"none",border:"none",color:"#7A9E9A",fontSize:20,cursor:"pointer",padding:4}}>✕</button>
-          </div>
-
-          {/* Animated bucket in cart header */}
-          <div style={{display:"flex",justifyContent:"center",marginTop:20}}>
-            <div style={{position:"relative"}}>
-              <div className="bucket-handle"/>
-              <div className="bucket-body">
-                <div className="bucket-stripe"/>
-                <div className="bucket-shine"/>
-                <div className="bucket-water" style={{height:`${Math.min(90,Math.max(10,count*15))}%`}}>
-                  {count>0&&<div style={{position:"absolute",top:8,left:"50%",transform:"translateX(-50%)",width:50,height:16,borderRadius:"50%",border:"1.5px solid rgba(255,255,255,0.3)",animation:"ripple 2s ease-out infinite"}}/>}
-                  {items.slice(0,3).map((item,i)=>(
-                    <div key={item.id} className="bucket-fish" style={{left:`${20+i*28}%`,top:`${-14-i*4}px`,animationDelay:`${i*0.4}s`,fontSize:i===0?18:14}}>
-                      {item.emoji}
-                    </div>
-                  ))}
-                </div>
-                {/* Label */}
-                <div style={{position:"absolute",top:6,left:0,right:0,textAlign:"center"}}>
-                  <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.85)",letterSpacing:1.5}}>DHANUSHYA</div>
-                </div>
-              </div>
-              {count===0&&(
-                <div className="sans" style={{position:"absolute",bottom:-24,left:"50%",transform:"translateX(-50%)",whiteSpace:"nowrap",fontSize:11,color:"#9ABAB6"}}>
-                  Empty bucket!
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Cart items */}
-        <div style={{flex:1,overflowY:"auto",padding:"16px 24px"}}>
-          {items.length===0?(
-            <div style={{textAlign:"center",marginTop:50}}>
-              <div style={{fontSize:48,marginBottom:12,opacity:0.3}}>🎣</div>
-              <div className="sans" style={{color:"#9ABAB6",fontSize:14}}>Start fishing for fresh catch!</div>
-              <button className="btn-teal" style={{padding:"10px 24px",fontSize:13,marginTop:20}}
-                onClick={()=>{setCartOpen(false);document.getElementById("menu")?.scrollIntoView({behavior:"smooth"});}}>
-                Browse Menu
-              </button>
-            </div>
-          ):items.map(item=>(
-            <div key={item.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16,paddingBottom:16,borderBottom:"1px solid rgba(13,148,136,0.08)"}}>
-              <div style={{display:"flex",gap:12,alignItems:"center"}}>
-                <div style={{width:46,height:46,background:"#F0FAF8",borderRadius:12,overflow:"hidden",border:"1px solid rgba(13,148,136,0.1)"}}>
-                  <img src={item.img} alt={item.name} style={{width:"100%",height:"100%",objectFit:"cover"}} onError={e=>{e.currentTarget.parentNode.innerHTML="🐟";e.currentTarget.parentNode.style.display="flex";e.currentTarget.parentNode.style.alignItems="center";e.currentTarget.parentNode.style.justifyContent="center";e.currentTarget.parentNode.style.fontSize="24px";}}/>
-                </div>
-                <div>
-                  <div style={{fontSize:14,fontWeight:600,color:"#1A2E2A",marginBottom:2}}>{item.name}</div>
-                  <div className="sans" style={{fontSize:11,color:"#9ABAB6"}}>{item.weight}</div>
-                </div>
-              </div>
-              <div style={{textAlign:"right"}}>
-                <div style={{fontSize:15,fontWeight:700,color:"#0D9488",marginBottom:8}}>₹{item.price*item.qty}</div>
-                <div style={{display:"flex",alignItems:"center",gap:8}}>
-                  <button className="qty-btn" onClick={()=>rem(item.id)}>−</button>
-                  <span className="sans" style={{fontSize:14,minWidth:20,textAlign:"center",fontWeight:600}}>{item.qty}</span>
-                  <button className="qty-btn" onClick={()=>add(item.id)}>+</button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Cart footer */}
-        {items.length>0&&(
-          <div style={{padding:"16px 24px 24px",borderTop:"1px solid rgba(13,148,136,0.1)",background:"white"}}>
-            <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
-              <span className="sans" style={{fontSize:14,color:"#4A6663"}}>Subtotal</span>
-              <span style={{fontSize:20,fontWeight:700,color:"#0D9488"}}>₹{total}</span>
-            </div>
-            {total<399&&<div className="sans" style={{fontSize:12,color:"#E07B2A",marginBottom:10,padding:"8px 12px",background:"#FEF3E8",borderRadius:8}}>⚠ Minimum order ₹399 — add ₹{399-total} more</div>}
-            {total>=399&&total<699&&<div className="sans" style={{fontSize:12,color:"#0D9488",marginBottom:10,padding:"8px 12px",background:"#F0FAF8",borderRadius:8}}>🎉 Add ₹{699-total} more for free delivery!</div>}
-            {total>=699&&<div className="sans" style={{fontSize:12,color:"#0D9488",marginBottom:10,padding:"8px 12px",background:"#F0FAF8",borderRadius:8}}>✓ Free delivery unlocked!</div>}
-            <button className="btn-teal" style={{width:"100%",padding:15,fontSize:15,display:"flex",alignItems:"center",justifyContent:"center",gap:10}}
-              onClick={waOrder} disabled={total<399}>
-              <span>💬</span> Order via WhatsApp
-            </button>
-            <div className="sans" style={{textAlign:"center",fontSize:11,color:"#9ABAB6",marginTop:10}}>
-              Opens WhatsApp with your order pre-filled
-            </div>
-          </div>
-        )}
-      </div>
-
       {/* ── FLOATING WA ── */}
-      <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noreferrer" style={{
+      <a href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hi! Please share today's catch and prices 🐟")}`} target="_blank" rel="noreferrer" style={{
         position:"fixed",bottom:28,right:28,zIndex:45,
         width:56,height:56,borderRadius:"50%",
         background:"linear-gradient(135deg,#25D366,#128C7E)",
