@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const WHATSAPP = "919999999999";
+const WHATSAPP = "919949682097";
 
 const products = [
   { id:1,  name:"Seer Fish (Vanjaram)",  weight:"500g", price:449, tag:"Bestseller",  cat:"Fresh Fish",    img:"https://cambaytiger.com/cdn/shop/files/SeerFish_1_0c2a8f10-0148-4d3d-9aca-b9bc875d2a14.jpg?v=1714978055", desc:"Cleaned & cut, pulusu-ready" },
