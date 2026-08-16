@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const WHATSAPP = "919999999999";
+const WHATSAPP = "919949682097";
 
 const products = [
   { id:1,  name:"Seer Fish (Vanjaram)",  telugu:"వంజరం చేప",      weight:"500g", tag:"Bestseller",  cat:"Fresh Fish",    img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/Seer%20Fish%20%28Vanjaram%29.png",     desc:"Cleaned & cut, pulusu-ready" },
