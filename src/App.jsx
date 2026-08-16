@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
 
-const WHATSAPP = "919949682097";
+const WHATSAPP = "919999999999";
 
 const products = [
-  { id:1,  name:"Seer Fish (Vanjaram)",  telugu:"వంజరం చేప",   weight:"500g", tag:"Bestseller",  cat:"Fresh Fish",    img:"https://i.ibb.co/bj5DnHKr/Seer-Fish-Vanjaram.png",   desc:"Cleaned & cut, pulusu-ready" },
-  { id:3,  name:"Pomfret (Whole)",       telugu:"చందవ చేప",    weight:"500g", tag:"Premium",     cat:"Fresh Fish",    img:"https://i.ibb.co/pvtdsry2/Pomfret-Whole.png",        desc:"Tawa-ready, slit & cleaned" },
-  { id:18, name:"Konam Fish (Barracuda)",telugu:"కోనం చేప",    weight:"500g", tag:"Fresh Today", cat:"Fresh Fish",    img:"https://i.ibb.co/N6HRm9q9/Konam-fish.png",           desc:"Firm flesh, fry or curry cut" },
-  { id:15, name:"Tuna",                  telugu:"తూన చేప",     weight:"500g", tag:"",            cat:"Fresh Fish",    img:"https://i.ibb.co/DHYTFGDC/Tuna.png",                 desc:"Steak-cut, grill or curry" },
-  { id:16, name:"Silver Pomfret",        telugu:"వెండి చందవ",  weight:"500g", tag:"Premium",     cat:"Fresh Fish",    img:"https://i.ibb.co/NdJ4ggK7/Silver-Pomfret.png",       desc:"Whole cleaned, tawa-ready" },
-  { id:17, name:"Lobster",               telugu:"లాబ్స్టర్",   weight:"500g", tag:"🔥 Special",  cat:"Fresh Fish",    img:"https://i.ibb.co/qFC3MczJ/Lobster.png",              desc:"Fresh, whole — pre-order advised" },
-  { id:8,  name:"Squid (Cleaned)",       telugu:"కుండ చేప",    weight:"300g", tag:"",            cat:"Prawns & Crab", img:"https://i.ibb.co/bgh1NW7v/Squid-Cleaned.png",        desc:"Cleaned, ring-cut, fry-ready" },
-  { id:9,  name:"Tiger Prawns",          telugu:"పెద్ద రొయ్యలు",weight:"500g", tag:"Premium",   cat:"Prawns & Crab", img:"https://i.ibb.co/3ms6KB7P/Tiger-Prawns.png",          desc:"Fresh, large, deveined" },
-  { id:10, name:"Medium Prawns",         telugu:"మధ్యస్థ రొయ్యలు",weight:"500g", tag:"",        cat:"Prawns & Crab", img:"https://i.ibb.co/gknnDbV/Medium-Prawns.png",          desc:"Cleaned & deveined" },
-  { id:11, name:"Small Prawns",          telugu:"చిన్న రొయ్యలు",weight:"500g", tag:"",          cat:"Prawns & Crab", img:"https://i.ibb.co/GfkRzp6s/small-prawns.png",          desc:"Cleaned, fry or curry use" },
-  { id:12, name:"Mud Crab",              telugu:"బురద పీత",    weight:"500g", tag:"Fresh Today", cat:"Prawns & Crab", img:"https://www.bigbasket.com/media/uploads/p/xxl/40218950_3-fresho-mud-crab-cut-cleaned.jpg", desc:"Live-to-cleaned, same morning" },
-  { id:13, name:"Blue Swimming Crab",    telugu:"నీలి పీత",    weight:"500g", tag:"",            cat:"Prawns & Crab", img:"https://cambaytiger.com/cdn/shop/files/BlueCrab.jpg",  desc:"Cleaned, curry-cut" },
+  { id:1,  name:"Seer Fish (Vanjaram)",  telugu:"వంజరం చేప",      weight:"500g", tag:"Bestseller",  cat:"Fresh Fish",    img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/seer-fish.png",     desc:"Cleaned & cut, pulusu-ready" },
+  { id:3,  name:"Pomfret (Whole)",       telugu:"చందవ చేప",       weight:"500g", tag:"Premium",     cat:"Fresh Fish",    img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/pomfret.png",        desc:"Tawa-ready, slit & cleaned" },
+  { id:18, name:"Konam Fish (Barracuda)",telugu:"కోనం చేప",       weight:"500g", tag:"Fresh Today", cat:"Fresh Fish",    img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/konam-fish.png",    desc:"Firm flesh, fry or curry cut" },
+  { id:15, name:"Tuna",                  telugu:"తూన చేప",        weight:"500g", tag:"",            cat:"Fresh Fish",    img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/tuna.png",           desc:"Steak-cut, grill or curry" },
+  { id:16, name:"Silver Pomfret",        telugu:"వెండి చందవ",     weight:"500g", tag:"Premium",     cat:"Fresh Fish",    img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/silver-pomfret.png", desc:"Whole cleaned, tawa-ready" },
+  { id:17, name:"Lobster",               telugu:"లాబ్స్టర్",      weight:"500g", tag:"🔥 Special",  cat:"Fresh Fish",    img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/lobster.png",        desc:"Fresh, whole — pre-order advised" },
+  { id:8,  name:"Squid (Cleaned)",       telugu:"కుండ చేప",       weight:"300g", tag:"",            cat:"Prawns & Crab", img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/squid.png",          desc:"Cleaned, ring-cut, fry-ready" },
+  { id:9,  name:"Tiger Prawns",          telugu:"పెద్ద రొయ్యలు",  weight:"500g", tag:"Premium",     cat:"Prawns & Crab", img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/tiger-prawns.png",   desc:"Fresh, large, deveined" },
+  { id:10, name:"Medium Prawns",         telugu:"మధ్యస్థ రొయ్యలు",weight:"500g", tag:"",            cat:"Prawns & Crab", img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/medium-prawns.png",  desc:"Cleaned & deveined" },
+  { id:11, name:"Small Prawns",          telugu:"చిన్న రొయ్యలు",  weight:"500g", tag:"",            cat:"Prawns & Crab", img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/small-prawns.png",   desc:"Cleaned, fry or curry use" },
+  { id:12, name:"Mud Crab",              telugu:"బురద పీత",       weight:"500g", tag:"Fresh Today", cat:"Prawns & Crab", img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/mud-crab.png",       desc:"Live-to-cleaned, same morning" },
+  { id:13, name:"Blue Swimming Crab",    telugu:"నీలి పీత",       weight:"500g", tag:"",            cat:"Prawns & Crab", img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/blue-crab.png",      desc:"Cleaned, curry-cut" },
 ];
 
 const cats = ["All", "Fresh Fish", "Prawns & Crab"];
@@ -356,7 +356,7 @@ export default function DhanushyaSeafoods() {
               We're at the Harbour<br/><em style={{color:"#0D9488"}}>Before You Wake Up</em>
             </h2>
             <p className="sans" style={{fontSize:15,color:"#4A6663",lineHeight:1.9,marginBottom:18}}>
-              Licious ships from Bangalore. FreshToHome from a warehouse. We walk to the harbour at 5AM and pick the best fish ourselves — every single day.
+              We're at Vizag harbour at 5AM every morning — hand-picking the day's finest catch. Fresh fish, prawns, crab, and selected frozen varieties, all sourced directly and delivered to your kitchen.
             </p>
             <p className="sans" style={{fontSize:15,color:"#4A6663",lineHeight:1.9,marginBottom:28}}>
               Every pack has a timestamp. <strong style={{color:"#1A2E2A"}}>Caught at 5:47 AM. Cleaned by 8 AM. Packed by noon.</strong> Not as a story. As a fact, printed on the label.
@@ -367,7 +367,7 @@ export default function DhanushyaSeafoods() {
           </div>
           <div {...reveal("story-r",200)}>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
-              {[["🐟","13+","Fresh SKUs Daily"],["⏱️","< 2hr","Sea to Packed"],["📍","6","Delivery Zones"],["⭐","0","Middlemen"]].map(([ico,n,l])=>(
+              {[["🐟","13+","Fresh SKUs Daily"],["⏱️","< 2hr","Sea to Packed"],["📍","All Vizag","Delivery"],["⭐","Zero","Middlemen"]].map(([ico,n,l])=>(
                 <div key={l} style={{background:"#F0FAF8",border:"1px solid rgba(13,148,136,0.12)",borderRadius:18,padding:"26px 18px",textAlign:"center"}}>
                   <div style={{fontSize:30,marginBottom:8}}>{ico}</div>
                   <div style={{fontSize:26,fontWeight:700,color:"#0D9488"}}>{n}</div>
