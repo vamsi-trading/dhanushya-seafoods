@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const WHATSAPP = "919949682097";
+const WHATSAPP = "919949682097"; // TODO: replace with real number
 
 const products = [
   { id:1,  name:"Seer Fish (Vanjaram)",  telugu:"వంజరం చేప",      weight:"500g", tag:"Bestseller",  cat:"Fresh Fish",    img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/Seer%20Fish%20%28Vanjaram%29.png",     desc:"Cleaned & cut, pulusu-ready" },
@@ -23,6 +23,7 @@ export default function DhanushyaSeafoods() {
   const [activeCat, setActiveCat] = useState("All");
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState({});
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -50,6 +51,8 @@ export default function DhanushyaSeafoods() {
       transform: visible[id] ? "translateY(0)" : "translateY(28px)",
     }
   });
+
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <div style={{ fontFamily:"'Cormorant Garamond','Georgia',serif", background:"#FDFAF6", color:"#1A2E2A", minHeight:"100vh", overflowX:"hidden" }}>
@@ -85,46 +88,55 @@ export default function DhanushyaSeafoods() {
         .cat-btn{font-family:'DM Sans',sans-serif;font-size:13px;padding:8px 20px;border-radius:50px;border:1.5px solid rgba(13,148,136,0.2);cursor:pointer;transition:all 0.25s;color:#4A6663;background:white;}
         .cat-btn.active{background:linear-gradient(135deg,#0D9488,#0F766E);color:white;border-color:transparent;box-shadow:0 4px 14px rgba(13,148,136,0.25);}
         .cat-btn:hover:not(.active){border-color:#0D9488;color:#0D9488;}
-        .qty-btn{width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(13,148,136,0.3);background:white;color:#0D9488;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
-        .qty-btn:hover{background:#0D9488;color:white;border-color:#0D9488;}
         .tag{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;background:rgba(13,148,136,0.1);color:#0D9488;letter-spacing:0.5px;}
-        .overlay{position:fixed;inset:0;background:rgba(26,46,42,0.35);z-index:49;backdrop-filter:blur(3px);}
 
-        /* Fishing bucket cart styles */
-        .bucket-handle{
-          width:60px;height:20px;border:3px solid #8B6914;border-bottom:none;
-          border-radius:30px 30px 0 0;margin:0 auto;position:relative;top:4px;
+        /* ── LAYOUT GRIDS (desktop default, overridden below on mobile) ── */
+        .grid-hero{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;}
+        .grid-hiw{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1100px;margin:0 auto;}
+        .grid-story{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;max-width:1000px;margin:0 auto;}
+        .grid-story-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+        .grid-delivery{display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:860px;margin:0 auto;}
+        .grid-catering{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:48px;}
+        .grid-supply{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;}
+        .footer-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;margin-bottom:28px;}
+
+        .nav-links-desktop{display:flex;gap:28px;align-items:center;}
+        .nav-burger{display:none;}
+        .mobile-menu-panel{display:none;}
+
+        section{padding-left:8%;padding-right:8%;}
+        h1{font-size:clamp(32px,4.5vw,62px);}
+
+        /* ── MOBILE (≤768px) ── */
+        @media (max-width:768px){
+          section{padding-left:6%;padding-right:6%;}
+          .grid-hero{grid-template-columns:1fr;gap:40px;}
+          .grid-hiw{grid-template-columns:1fr 1fr;gap:14px;}
+          .grid-story{grid-template-columns:1fr;gap:36px;}
+          .grid-story-stats{grid-template-columns:1fr 1fr;}
+          .grid-delivery{grid-template-columns:1fr;gap:20px;}
+          .grid-catering{grid-template-columns:1fr;gap:16px;}
+          .grid-supply{grid-template-columns:1fr 1fr;}
+          .nav-links-desktop{display:none;}
+          .nav-burger{display:flex !important;}
+          .mobile-menu-panel.open{display:flex;}
+          .hero-stats{flex-wrap:wrap;gap:22px !important;}
+          .footer-row{flex-direction:column;align-items:flex-start;text-align:left;}
+          .footer-meta{flex-direction:column;align-items:flex-start !important;gap:6px;}
         }
-        .bucket-body{
-          width:90px;height:70px;
-          background:linear-gradient(160deg,#E8B84B,#C8960A);
-          border-radius:6px 6px 18px 18px;
-          position:relative;overflow:hidden;
-          border:2px solid #A87A08;
-          box-shadow:inset -6px 0 12px rgba(0,0,0,0.15),0 4px 12px rgba(0,0,0,0.15);
-        }
-        .bucket-stripe{position:absolute;top:22px;left:0;right:0;height:3px;background:rgba(0,0,0,0.12);}
-        .bucket-shine{position:absolute;top:6px;left:8px;width:12px;height:40px;background:rgba(255,255,255,0.25);border-radius:6px;transform:rotate(-10deg);}
-        .bucket-water{
-          position:absolute;bottom:0;left:0;right:0;
-          background:linear-gradient(180deg,rgba(13,148,136,0.7),rgba(7,94,84,0.9));
-          transition:height 0.4s ease;border-radius:0 0 16px 16px;
-        }
-        .bucket-fish{position:absolute;font-size:16px;animation:bobble 2s ease-in-out infinite;}
-        .ripple-ring{
-          position:absolute;border-radius:50%;
-          border:1.5px solid rgba(13,148,136,0.5);
-          animation:ripple 1.5s ease-out infinite;
+        @media (max-width:480px){
+          .grid-hiw{grid-template-columns:1fr;}
+          .grid-supply{grid-template-columns:1fr;}
         }
       `}</style>
 
       {/* ── NAV ── */}
       <nav style={{
-        position:"fixed",top:0,left:0,right:0,zIndex:40,
+        position:"fixed",top:0,left:0,right:0,zIndex:50,
         padding:"0 6%",height:66,
-        background: scrolled ? "rgba(253,250,246,0.96)" : "transparent",
-        backdropFilter: scrolled ? "blur(20px)" : "none",
-        borderBottom: scrolled ? "1px solid rgba(13,148,136,0.12)" : "none",
+        background: scrolled || menuOpen ? "rgba(253,250,246,0.98)" : "transparent",
+        backdropFilter: scrolled || menuOpen ? "blur(20px)" : "none",
+        borderBottom: scrolled || menuOpen ? "1px solid rgba(13,148,136,0.12)" : "none",
         transition:"all 0.4s",
         display:"flex",alignItems:"center",justifyContent:"space-between",
       }}>
@@ -135,18 +147,49 @@ export default function DhanushyaSeafoods() {
             <div className="sans" style={{fontSize:9,color:"#0D9488",letterSpacing:4}}>SEAFOODS · VIZAG</div>
           </div>
         </div>
-        <div style={{display:"flex",gap:28,alignItems:"center"}}>
+
+        <div className="nav-links-desktop">
           {["Menu","Story","Catering","Delivery"].map(l=>(
             <a key={l} className="nav-link" href={`#${l.toLowerCase()}`}>{l}</a>
           ))}
         </div>
+
         <div style={{display:"flex",gap:12,alignItems:"center"}}>
           <a href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hi! Please share today's catch and prices 🐟")}`} target="_blank" rel="noreferrer"
             style={{display:"flex",alignItems:"center",gap:8,padding:"9px 20px",background:"#25D366",borderRadius:50,color:"white",textDecoration:"none",fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:500}}>
             💬 Today's Rates
           </a>
+          {/* Hamburger — mobile only */}
+          <button
+            className="nav-burger"
+            onClick={()=>setMenuOpen(o=>!o)}
+            aria-label="Menu"
+            style={{
+              width:38,height:38,border:"1.5px solid rgba(13,148,136,0.3)",borderRadius:10,
+              background:"white",alignItems:"center",justifyContent:"center",cursor:"pointer",
+              display:"none",flexDirection:"column",gap:4,
+            }}>
+            <span style={{width:16,height:2,background:"#0D9488",display:"block",transition:"transform 0.2s",transform:menuOpen?"translateY(6px) rotate(45deg)":"none"}}/>
+            <span style={{width:16,height:2,background:"#0D9488",display:"block",opacity:menuOpen?0:1,transition:"opacity 0.2s"}}/>
+            <span style={{width:16,height:2,background:"#0D9488",display:"block",transition:"transform 0.2s",transform:menuOpen?"translateY(-6px) rotate(-45deg)":"none"}}/>
+          </button>
         </div>
       </nav>
+
+      {/* Mobile menu dropdown panel */}
+      <div className={`mobile-menu-panel ${menuOpen ? "open" : ""}`} style={{
+        position:"fixed",top:66,left:0,right:0,zIndex:49,
+        background:"#FDFAF6",borderBottom:"1px solid rgba(13,148,136,0.12)",
+        flexDirection:"column",padding:"14px 6% 22px",gap:4,
+        boxShadow:"0 12px 24px rgba(0,0,0,0.06)",
+      }}>
+        {["Menu","Story","Catering","Delivery"].map(l=>(
+          <a key={l} href={`#${l.toLowerCase()}`} onClick={closeMenu} className="sans"
+            style={{padding:"12px 4px",fontSize:15,color:"#1A2E2A",textDecoration:"none",borderBottom:"1px solid rgba(13,148,136,0.08)"}}>
+            {l}
+          </a>
+        ))}
+      </div>
 
       {/* ── HERO ── */}
       <section style={{
@@ -154,7 +197,6 @@ export default function DhanushyaSeafoods() {
         background:"linear-gradient(160deg,#FDFAF6 0%,#F0FAF8 50%,#E6F7F5 100%)",
         position:"relative",overflow:"hidden",
       }}>
-        {/* Subtle wave bg */}
         <div style={{position:"absolute",bottom:0,left:0,right:0,height:180,overflow:"hidden",opacity:0.4}}>
           <div style={{display:"flex",animation:"wavemove 10s linear infinite",width:"200%"}}>
             <svg viewBox="0 0 1200 180" style={{width:"50%",minWidth:600}} preserveAspectRatio="none">
@@ -165,29 +207,18 @@ export default function DhanushyaSeafoods() {
             </svg>
           </div>
         </div>
-        <div style={{position:"absolute",bottom:0,left:0,right:0,height:120,overflow:"hidden",opacity:0.3}}>
-          <div style={{display:"flex",animation:"wavemove 14s linear infinite reverse",width:"200%"}}>
-            <svg viewBox="0 0 1200 120" style={{width:"50%",minWidth:600}} preserveAspectRatio="none">
-              <path d="M0 60 Q200 20 400 60 Q600 100 800 60 Q1000 20 1200 60 L1200 120 L0 120Z" fill="rgba(13,148,136,0.12)"/>
-            </svg>
-            <svg viewBox="0 0 1200 120" style={{width:"50%",minWidth:600}} preserveAspectRatio="none">
-              <path d="M0 60 Q200 20 400 60 Q600 100 800 60 Q1000 20 1200 60 L1200 120 L0 120Z" fill="rgba(13,148,136,0.12)"/>
-            </svg>
-          </div>
-        </div>
 
-        {/* Decorative fish scattered */}
         {[["🐟","12%","20%","3s","0s"],["🦐","85%","30%","4s","1s"],["🦀","8%","70%","3.5s","0.5s"],["🐠","88%","65%","4s","1.5s"]].map(([e,l,t,dur,delay])=>(
           <div key={l} style={{position:"absolute",left:l,top:t,fontSize:28,opacity:0.12,animation:`bobble ${dur} ease-in-out infinite`,animationDelay:delay}}>{e}</div>
         ))}
 
         <div style={{position:"relative",zIndex:2,padding:"130px 8% 80px",maxWidth:1200,margin:"0 auto",width:"100%"}}>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:70,alignItems:"center"}}>
+          <div className="grid-hero">
             <div>
               <div className="sans" style={{fontSize:11,letterSpacing:5,color:"#0D9488",marginBottom:18,textTransform:"uppercase",fontWeight:600}}>
                 Vizag Harbour · Caught Daily at 5AM
               </div>
-              <h1 style={{fontSize:"clamp(38px,4.5vw,62px)",fontWeight:700,lineHeight:1.1,marginBottom:22,color:"#1A2E2A"}}>
+              <h1 style={{fontWeight:700,lineHeight:1.1,marginBottom:22,color:"#1A2E2A"}}>
                 The Freshest Catch<br/>
                 <span className="teal-text">Harbour to Kitchen</span>
               </h1>
@@ -200,13 +231,11 @@ export default function DhanushyaSeafoods() {
                   Shop Fresh Catch →
                 </button>
                 <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noreferrer"
-                  style={{display:"flex",alignItems:"center",gap:8,padding:"13px 26px",borderRadius:50,border:"1.5px solid rgba(13,148,136,0.4)",color:"#0D9488",textDecoration:"none",fontSize:15,fontFamily:"'DM Sans',sans-serif",fontWeight:500,transition:"all 0.3s",background:"white"}}
-                  onMouseEnter={e=>{e.currentTarget.style.background="#0D9488";e.currentTarget.style.color="white";}}
-                  onMouseLeave={e=>{e.currentTarget.style.background="white";e.currentTarget.style.color="#0D9488";}}>
+                  style={{display:"flex",alignItems:"center",gap:8,padding:"13px 26px",borderRadius:50,border:"1.5px solid rgba(13,148,136,0.4)",color:"#0D9488",textDecoration:"none",fontSize:15,fontFamily:"'DM Sans',sans-serif",fontWeight:500,background:"white"}}>
                   💬 WhatsApp
                 </a>
               </div>
-              <div className="sans" style={{display:"flex",gap:36,marginTop:44}}>
+              <div className="sans hero-stats" style={{display:"flex",gap:36,marginTop:44}}>
                 {[["5AM","Daily Harbour Catch"],["2hr","Sea to Packed"],["0°C","Cold Chain Intact"]].map(([n,l])=>(
                   <div key={n}>
                     <div style={{fontSize:24,fontWeight:700,color:"#0D9488"}}>{n}</div>
@@ -216,34 +245,25 @@ export default function DhanushyaSeafoods() {
               </div>
             </div>
 
-            {/* Hero visual — fishing bucket with fish */}
             <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",position:"relative"}}>
-              {/* Large decorative bucket */}
               <div style={{position:"relative",marginBottom:20}}>
                 <div style={{width:80,height:26,border:"4px solid #8B6914",borderBottom:"none",borderRadius:"40px 40px 0 0",margin:"0 auto",position:"relative",top:6,zIndex:2}}/>
                 <div style={{width:180,height:200,background:"linear-gradient(160deg,#F0C45A,#C8960A,#A87A08)",borderRadius:"12px 12px 50px 50px",position:"relative",overflow:"hidden",border:"3px solid #A87A08",boxShadow:"inset -12px 0 24px rgba(0,0,0,0.15), 0 12px 40px rgba(168,122,8,0.25)"}}>
-                  {/* Bucket stripes */}
                   <div style={{position:"absolute",top:44,left:0,right:0,height:4,background:"rgba(0,0,0,0.1)"}}/>
                   <div style={{position:"absolute",top:80,left:0,right:0,height:3,background:"rgba(0,0,0,0.08)"}}/>
-                  {/* Shine */}
                   <div style={{position:"absolute",top:10,left:16,width:22,height:120,background:"rgba(255,255,255,0.2)",borderRadius:12,transform:"rotate(-8deg)"}}/>
-                  {/* Water fill */}
-                  <div style={{position:"absolute",bottom:0,left:0,right:0,height:"55%",background:"linear-gradient(180deg,rgba(13,148,136,0.5) 0%,rgba(7,94,84,0.8) 100%)",borderRadius:"0 0 47px 47px",transition:"height 0.4s"}}>
-                    {/* Ripple rings on water surface */}
+                  <div style={{position:"absolute",bottom:0,left:0,right:0,height:"55%",background:"linear-gradient(180deg,rgba(13,148,136,0.5) 0%,rgba(7,94,84,0.8) 100%)",borderRadius:"0 0 47px 47px"}}>
                     <div style={{position:"absolute",top:8,left:"50%",transform:"translateX(-50%)",width:60,height:20,borderRadius:"50%",border:"1.5px solid rgba(255,255,255,0.3)",animation:"ripple 2s ease-out infinite"}}/>
                     <div style={{position:"absolute",top:8,left:"50%",transform:"translateX(-50%)",width:40,height:14,borderRadius:"50%",border:"1.5px solid rgba(255,255,255,0.2)",animation:"ripple 2s ease-out infinite",animationDelay:"0.5s"}}/>
-                    {/* Fish peeking from water */}
                     <div style={{position:"absolute",top:-16,left:"50%",transform:"translateX(-60%)",fontSize:32,animation:"bobble 2s ease-in-out infinite"}}>🐟</div>
                     <div style={{position:"absolute",top:-10,right:22,fontSize:22,animation:"bobble 2.5s ease-in-out infinite",animationDelay:"0.8s"}}>🦐</div>
                   </div>
-                  {/* Label on bucket */}
                   <div style={{position:"absolute",top:14,left:0,right:0,textAlign:"center"}}>
                     <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:13,fontWeight:700,color:"rgba(255,255,255,0.9)",letterSpacing:2}}>DHANUSHYA</div>
                     <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:9,color:"rgba(255,255,255,0.65)",letterSpacing:3}}>SEAFOODS</div>
                   </div>
                 </div>
               </div>
-              {/* Catch time stamp card */}
               <div style={{background:"white",borderRadius:16,padding:"14px 22px",border:"1px solid rgba(13,148,136,0.15)",boxShadow:"0 8px 24px rgba(13,148,136,0.1)",textAlign:"center"}}>
                 <div className="sans" style={{fontSize:10,color:"#0D9488",letterSpacing:3,marginBottom:4}}>TODAY'S CATCH</div>
                 <div style={{fontSize:15,fontWeight:600,color:"#1A2E2A"}}>Cut at Harbour 5:47 AM</div>
@@ -258,9 +278,9 @@ export default function DhanushyaSeafoods() {
       <section style={{padding:"80px 8%",background:"white"}}>
         <div {...reveal("hiw")} style={{textAlign:"center",marginBottom:52}}>
           <div className="sans" style={{fontSize:11,letterSpacing:5,color:"#0D9488",marginBottom:10,fontWeight:600}}>THE PROCESS</div>
-          <h2 style={{fontSize:36,fontWeight:700,color:"#1A2E2A"}}>From Sea to Your Plate</h2>
+          <h2 style={{fontSize:"clamp(26px,4vw,36px)",fontWeight:700,color:"#1A2E2A"}}>From Sea to Your Plate</h2>
         </div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:20,maxWidth:1100,margin:"0 auto"}}>
+        <div className="grid-hiw">
           {[
             ["🌅","5:00 AM","Harbour Catch","Our buyer picks the freshest catch at Vizag harbour — first pick every morning."],
             ["🔪","7:00 AM","Clean & Cut","Fish cleaned, scaled, cut to your preferred style — pulusu, tawa, or curry cut."],
@@ -281,11 +301,10 @@ export default function DhanushyaSeafoods() {
       <section id="menu" style={{padding:"80px 8%",background:"#FDFAF6"}}>
         <div {...reveal("menu-hdr")} style={{textAlign:"center",marginBottom:40}}>
           <div className="sans" style={{fontSize:11,letterSpacing:5,color:"#0D9488",marginBottom:10,fontWeight:600}}>FRESH TODAY</div>
-          <h2 style={{fontSize:36,fontWeight:700,color:"#1A2E2A"}}>Today's Catch</h2>
+          <h2 style={{fontSize:"clamp(26px,4vw,36px)",fontWeight:700,color:"#1A2E2A"}}>Today's Catch</h2>
           <p className="sans" style={{fontSize:14,color:"#6A8E8A",marginTop:10,marginBottom:20}}>Cleaned & cut to order · All items subject to availability</p>
-          {/* WhatsApp rates banner */}
           <div style={{
-            display:"inline-flex",alignItems:"center",gap:12,
+            display:"inline-flex",alignItems:"center",gap:12,flexWrap:"wrap",justifyContent:"center",
             background:"#F0FAF8",border:"1.5px solid rgba(13,148,136,0.2)",
             borderRadius:16,padding:"14px 24px",marginBottom:8,
           }}>
@@ -306,17 +325,14 @@ export default function DhanushyaSeafoods() {
             <button key={c} className={`cat-btn ${activeCat===c?"active":""}`} onClick={()=>setActiveCat(c)}>{c}</button>
           ))}
         </div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(230px,1fr))",gap:18,maxWidth:1200,margin:"0 auto"}}>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(160px,1fr))",gap:18,maxWidth:1200,margin:"0 auto"}}>
           {filtered.map((p,i)=>(
             <div key={p.id} {...reveal(`p${p.id}`,i*50)} className="card" style={{padding:0,overflow:"hidden"}}>
-              {/* Product image */}
               <div style={{height:160,overflow:"hidden",position:"relative",background:"#F0FAF8"}}>
                 <img
                   src={p.img}
                   alt={p.name}
                   style={{width:"100%",height:"100%",objectFit:"cover",transition:"transform 0.4s"}}
-                  onMouseEnter={e=>e.currentTarget.style.transform="scale(1.07)"}
-                  onMouseLeave={e=>e.currentTarget.style.transform="scale(1)"}
                   onError={e=>{e.currentTarget.style.display="none";e.currentTarget.parentNode.style.fontSize="60px";e.currentTarget.parentNode.style.display="flex";e.currentTarget.parentNode.style.alignItems="center";e.currentTarget.parentNode.style.justifyContent="center";}}
                 />
                 {p.tag&&(
@@ -330,7 +346,7 @@ export default function DhanushyaSeafoods() {
                 <div style={{fontSize:13,color:"#0D9488",marginBottom:3,fontFamily:"'Noto Sans Telugu',sans-serif"}}>{p.telugu}</div>
                 <div className="sans" style={{fontSize:12,color:"#9ABAB6",marginBottom:4}}>{p.weight}</div>
                 <div className="sans" style={{fontSize:12,color:"#7A9E9A",marginBottom:16,lineHeight:1.6}}>{p.desc}</div>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8}}>
                   <div>
                     <div className="sans" style={{fontSize:10,color:"#9ABAB6",letterSpacing:1}}>TODAY'S PRICE</div>
                     <div className="sans" style={{fontSize:13,fontWeight:600,color:"#0D9488"}}>WhatsApp to enquire</div>
@@ -349,10 +365,10 @@ export default function DhanushyaSeafoods() {
 
       {/* ── STORY ── */}
       <section id="story" style={{padding:"80px 8%",background:"white"}}>
-        <div style={{maxWidth:1000,margin:"0 auto",display:"grid",gridTemplateColumns:"1fr 1fr",gap:72,alignItems:"center"}}>
+        <div className="grid-story">
           <div {...reveal("story-l")}>
             <div className="sans" style={{fontSize:11,letterSpacing:5,color:"#0D9488",marginBottom:16,fontWeight:600}}>WHY DHANUSHYA</div>
-            <h2 style={{fontSize:38,fontWeight:700,lineHeight:1.2,marginBottom:22,color:"#1A2E2A"}}>
+            <h2 style={{fontSize:"clamp(28px,4.5vw,38px)",fontWeight:700,lineHeight:1.2,marginBottom:22,color:"#1A2E2A"}}>
               We're at the Harbour<br/><em style={{color:"#0D9488"}}>Before You Wake Up</em>
             </h2>
             <p className="sans" style={{fontSize:15,color:"#4A6663",lineHeight:1.9,marginBottom:18}}>
@@ -366,7 +382,7 @@ export default function DhanushyaSeafoods() {
             </div>
           </div>
           <div {...reveal("story-r",200)}>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
+            <div className="grid-story-stats">
               {[["🐟","13+","Fresh SKUs Daily"],["⏱️","< 2hr","Sea to Packed"],["📍","All Vizag","Delivery"],["⭐","Zero","Middlemen"]].map(([ico,n,l])=>(
                 <div key={l} style={{background:"#F0FAF8",border:"1px solid rgba(13,148,136,0.12)",borderRadius:18,padding:"26px 18px",textAlign:"center"}}>
                   <div style={{fontSize:30,marginBottom:8}}>{ico}</div>
@@ -383,9 +399,9 @@ export default function DhanushyaSeafoods() {
       <section id="delivery" style={{padding:"80px 8%",background:"#F0FAF8"}}>
         <div {...reveal("del-hdr")} style={{textAlign:"center",marginBottom:48}}>
           <div className="sans" style={{fontSize:11,letterSpacing:5,color:"#0D9488",marginBottom:10,fontWeight:600}}>COVERAGE</div>
-          <h2 style={{fontSize:36,fontWeight:700,color:"#1A2E2A"}}>Delivery Areas & Slots</h2>
+          <h2 style={{fontSize:"clamp(26px,4vw,36px)",fontWeight:700,color:"#1A2E2A"}}>Delivery Areas & Slots</h2>
         </div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:32,maxWidth:860,margin:"0 auto"}}>
+        <div className="grid-delivery">
           <div {...reveal("del-a")} className="card" style={{padding:"32px 26px"}}>
             <div style={{fontSize:20,fontWeight:700,color:"#1A2E2A",marginBottom:6}}>📍 Delivery Zones</div>
             <div className="sans" style={{fontSize:13,color:"#0D9488",marginBottom:18,fontWeight:600}}>All Areas Across Visakhapatnam</div>
@@ -424,19 +440,18 @@ export default function DhanushyaSeafoods() {
 
       {/* ── CATERING & FUNCTIONS ── */}
       <section id="catering" style={{padding:"80px 8%",background:"#1A2E2A",position:"relative",overflow:"hidden"}}>
-        {/* Subtle wave decoration */}
         <div style={{position:"absolute",top:0,left:0,right:0,height:4,background:"linear-gradient(90deg,transparent,#0D9488,transparent)"}}/>
 
         <div style={{maxWidth:1100,margin:"0 auto"}}>
           <div {...reveal("cat-hdr")} style={{textAlign:"center",marginBottom:52}}>
             <div className="sans" style={{fontSize:11,letterSpacing:5,color:"#0D9488",marginBottom:10,fontWeight:600}}>LARGE ORDERS WELCOME</div>
-            <h2 style={{fontSize:38,fontWeight:700,color:"white",marginBottom:14}}>Catering & Functions</h2>
+            <h2 style={{fontSize:"clamp(26px,4.5vw,38px)",fontWeight:700,color:"white",marginBottom:14}}>Catering & Functions</h2>
             <p className="sans" style={{fontSize:15,color:"rgba(240,250,248,0.55)",maxWidth:520,margin:"0 auto",lineHeight:1.8}}>
               Marriages, engagements, housewarming, corporate events — we supply fresh seafood in any quantity, cleaned and cut to your requirement. No minimum order.
             </p>
           </div>
 
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:20,marginBottom:48}}>
+          <div className="grid-catering">
             {[
               ["💍","Marriages & Receptions","Hundreds of kilos of seer, rohu, prawns, crab — all cleaned and portioned for your caterer. Delivered the morning of the function."],
               ["🏠","Housewarming & Griha Pravesh","Fresh fish bundles for intimate functions. We coordinate timing with your kitchen staff so everything is fresh when cooking begins."],
@@ -446,10 +461,7 @@ export default function DhanushyaSeafoods() {
                 background:"rgba(255,255,255,0.05)",
                 border:"1px solid rgba(13,148,136,0.25)",
                 borderRadius:20,padding:"30px 24px",
-                transition:"all 0.3s",
-              }}
-              onMouseEnter={e=>{e.currentTarget.style.background="rgba(13,148,136,0.12)";e.currentTarget.style.borderColor="rgba(13,148,136,0.5)";}}
-              onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.05)";e.currentTarget.style.borderColor="rgba(13,148,136,0.25)";}}>
+              }}>
                 <div style={{fontSize:38,marginBottom:16}}>{ico}</div>
                 <div style={{fontSize:17,fontWeight:700,color:"white",marginBottom:10}}>{title}</div>
                 <p className="sans" style={{fontSize:13,color:"rgba(240,250,248,0.55)",lineHeight:1.75}}>{desc}</p>
@@ -457,10 +469,9 @@ export default function DhanushyaSeafoods() {
             ))}
           </div>
 
-          {/* What we supply */}
           <div {...reveal("cat-supply")} style={{background:"rgba(13,148,136,0.1)",border:"1px solid rgba(13,148,136,0.2)",borderRadius:20,padding:"32px 36px",marginBottom:36}}>
             <div style={{fontSize:18,fontWeight:700,color:"white",marginBottom:20}}>What We Can Supply for Your Function</div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:12}}>
+            <div className="grid-supply">
               {[
                 ["🐟","Seer Fish (Vanjaram)","Any quantity"],
                 ["🐠","Rohu / Catla","Curry cut or whole"],
@@ -482,7 +493,6 @@ export default function DhanushyaSeafoods() {
             </div>
           </div>
 
-          {/* CTA */}
           <div {...reveal("cat-cta")} style={{textAlign:"center"}}>
             <div className="sans" style={{fontSize:14,color:"rgba(240,250,248,0.5)",marginBottom:20}}>
               Call us at least <strong style={{color:"rgba(240,250,248,0.8)"}}>2 days in advance</strong> for bulk orders. Same-day possible for orders under 10kg.
@@ -503,7 +513,7 @@ export default function DhanushyaSeafoods() {
 
       {/* ── FOOTER ── */}
       <footer style={{padding:"44px 8% 28px",background:"#1A2E2A",color:"rgba(240,250,248,0.8)"}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:20,marginBottom:28}}>
+        <div className="footer-row">
           <div>
             <div style={{fontSize:18,fontWeight:700,letterSpacing:1.5,color:"white"}}>DHANUSHYA SEAFOODS</div>
             <div className="sans" style={{fontSize:11,color:"rgba(240,250,248,0.4)",marginTop:4,letterSpacing:2}}>HARBOUR FRESH · VIZAG</div>
@@ -513,7 +523,7 @@ export default function DhanushyaSeafoods() {
             💬 Order on WhatsApp
           </a>
         </div>
-        <div className="sans" style={{display:"flex",justifyContent:"space-between",flexWrap:"wrap",gap:10,fontSize:11,color:"rgba(240,250,248,0.25)",borderTop:"1px solid rgba(255,255,255,0.08)",paddingTop:18}}>
+        <div className="sans footer-meta" style={{display:"flex",justifyContent:"space-between",flexWrap:"wrap",gap:10,fontSize:11,color:"rgba(240,250,248,0.25)",borderTop:"1px solid rgba(255,255,255,0.08)",paddingTop:18}}>
           <span>© 2025 Dhanushya Seafoods · Visakhapatnam</span>
           <span>FSSAI Lic. No: XXXXXXXXXXXX</span>
           <span>All prices inclusive of GST</span>
@@ -528,10 +538,7 @@ export default function DhanushyaSeafoods() {
         display:"flex",alignItems:"center",justifyContent:"center",
         fontSize:24,textDecoration:"none",
         boxShadow:"0 6px 20px rgba(37,211,102,0.35)",
-        transition:"transform 0.2s",
-      }}
-      onMouseEnter={e=>e.currentTarget.style.transform="scale(1.12)"}
-      onMouseLeave={e=>e.currentTarget.style.transform="scale(1)"}>
+      }}>
         💬
       </a>
     </div>
