@@ -39,6 +39,24 @@ const processSteps = [
   { title:"Fresh Delivery",desc:"Cold chain maintained the whole way to your door." },
 ];
 
+const benefits = [
+  { en:"Omega-3", enSub:"For Your Heart", te:"ఒమేగా-3", teSub:"మీ గుండె కోసం",
+    enDesc:"Rich in omega-3 fatty acids that support healthy cholesterol and heart function.",
+    teDesc:"ఒమేగా-3 కొవ్వు ఆమ్లాలు ఆరోగ్యకరమైన కొలెస్ట్రాల్ మరియు గుండె పనితీరుకు తోడ్పడతాయి." },
+  { en:"Protein", enSub:"For Muscle Repair", te:"ప్రొటీన్", teSub:"కండరాల మరమ్మత్తు కోసం",
+    enDesc:"High-quality, easily digestible protein that helps repair and rebuild muscle.",
+    teDesc:"అధిక నాణ్యత గల ప్రొటీన్ కండరాలను బాగుచేసి తిరిగి నిర్మించడంలో సహాయపడుతుంది." },
+  { en:"DHA", enSub:"For Brain & Eyes", te:"DHA", teSub:"మెదడు మరియు కళ్ళ కోసం",
+    enDesc:"A key structural component of the brain and retina, supporting memory and vision.",
+    teDesc:"మెదడు మరియు రెటీనాలో కీలకమైన భాగం, జ్ఞాపకశక్తి మరియు దృష్టికి తోడ్పడుతుంది." },
+  { en:"Vitamin D & B12", enSub:"For Immunity & Energy", te:"విటమిన్ D & B12", teSub:"రోగనిరోధక శక్తి కోసం",
+    enDesc:"One of the few natural food sources of vitamin D, supporting immunity and energy.",
+    teDesc:"విటమిన్ D అందించే అరుదైన సహజ ఆహారం, రోగనిరోధక శక్తికి తోడ్పడుతుంది." },
+  { en:"Anti-inflammatory", enSub:"For Joints & Skin", te:"యాంటీ-ఇన్ఫ్లమేటరీ", teSub:"కీళ్ళు మరియు చర్మం కోసం",
+    enDesc:"Natural anti-inflammatory properties that may ease joint stiffness and support skin health.",
+    teDesc:"కీళ్ల నొప్పులను తగ్గించి చర్మ ఆరోగ్యానికి తోడ్పడే శోథ నిరోధక గుణాలు." },
+];
+
 export default function DhanushyaSeafoods() {
   const [activeCat, setActiveCat] = useState("All");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -218,6 +236,31 @@ export default function DhanushyaSeafoods() {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* BENEFITS */}
+      <section style={{ padding:"90px 6%",background:"#132420" }}>
+        <div style={{ textAlign:"center",marginBottom:48 }}>
+          <div className="eyebrow" style={{ textAlign:"center" }}>GOOD FOR YOU</div>
+          <h2 className="display" style={{ fontSize:38,fontWeight:600,color:"#F3EEDD",marginTop:10 }}>Why Seafood, Why Often</h2>
+        </div>
+        <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:1,background:"rgba(224,185,74,0.15)",maxWidth:1200,margin:"0 auto" }}>
+          {benefits.map(b=>(
+            <div key={b.en} style={{ background:"#132420",padding:"30px 26px" }}>
+              <div className="display" style={{ fontSize:20,fontWeight:600,color:"#F3EEDD" }}>{b.en}</div>
+              <div className="display" style={{ fontSize:14,fontStyle:"italic",color:"#E0B94A",marginBottom:12 }}>{b.enSub}</div>
+              <p className="sans" style={{ fontSize:12.5,color:"#8FA39C",lineHeight:1.7,marginBottom:16 }}>{b.enDesc}</p>
+              <div style={{ borderTop:"1px solid rgba(224,185,74,0.15)",paddingTop:14 }}>
+                <div style={{ fontFamily:"'Noto Sans Telugu',sans-serif",fontSize:17,fontWeight:600,color:"#F3EEDD" }}>{b.te}</div>
+                <div style={{ fontFamily:"'Noto Sans Telugu',sans-serif",fontSize:13,color:"#E0B94A",marginBottom:10 }}>{b.teSub}</div>
+                <p style={{ fontFamily:"'Noto Sans Telugu',sans-serif",fontSize:12,color:"#8FA39C",lineHeight:1.8 }}>{b.teDesc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="sans" style={{ textAlign:"center",fontSize:11.5,color:"#5C6B72",marginTop:28,maxWidth:520,marginLeft:"auto",marginRight:"auto",lineHeight:1.6 }}>
+          General nutrition information, not medical advice. Consult a doctor for dietary guidance specific to you.
+        </p>
       </section>
 
       {/* FULL MENU */}
