@@ -271,7 +271,6 @@ export default function DhanushyaSeafoods() {
               <div className="display" style={{ fontSize:17,fontWeight:600 }}>Morning Slot</div>
               <div className="sans" style={{ fontSize:13,color:"#8A8272",marginTop:6 }}>Order the night before for morning delivery</div>
             </div>
-            <div className="sans" style={{ fontSize:13,color:"#6B6355",textAlign:"center" }}>Free delivery above ₹699 · ₹39 below · Min order ₹399</div>
           </div>
         </div>
       </section>
