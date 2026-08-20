@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 
-const WHATSAPP = "919949682097"; // TODO: replace with real number
+const WHATSAPP = "919949682097"; // TODO: confirm this matches what's live on GitHub
+
+// TODO: Upload IMG_1384.JPG (the illustrated harbour hero) to your GitHub repo's
+// /public folder, then point this at it the same way your product photos work, e.g.:
+// https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/harbour-hero.jpg
+const HERO_IMAGE = "https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/harbour-hero.jpg";
 
 const products = [
   { id:1,  name:"Seer Fish (Vanjaram)",  telugu:"వంజరం చేప",      weight:"500g", tag:"Bestseller",  cat:"Fresh Fish",    img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/Seer%20Fish%20%28Vanjaram%29.png",     desc:"Cleaned & cut, pulusu-ready" },
@@ -8,7 +13,7 @@ const products = [
   { id:18, name:"Konam Fish (Barracuda)",telugu:"కోనం చేప",       weight:"500g", tag:"Fresh Today", cat:"Fresh Fish",    img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/Konam%20fish.png",    desc:"Firm flesh, fry or curry cut" },
   { id:15, name:"Tuna",                  telugu:"తూన చేప",        weight:"500g", tag:"",            cat:"Fresh Fish",    img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/Tuna.png",           desc:"Steak-cut, grill or curry" },
   { id:16, name:"Silver Pomfret",        telugu:"వెండి చందవ",     weight:"500g", tag:"Premium",     cat:"Fresh Fish",    img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/Silver%20Pomfret.png", desc:"Whole cleaned, tawa-ready" },
-  { id:17, name:"Lobster",               telugu:"లాబ్స్టర్",      weight:"500g", tag:"🔥 Special",  cat:"Fresh Fish",    img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/Lobster.png",        desc:"Fresh, whole — pre-order advised" },
+  { id:17, name:"Lobster",               telugu:"లాబ్స్టర్",      weight:"500g", tag:"Special",     cat:"Fresh Fish",    img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/Lobster.png",        desc:"Fresh, whole — pre-order advised" },
   { id:8,  name:"Squid (Cleaned)",       telugu:"కుండ చేప",       weight:"300g", tag:"",            cat:"Prawns & Crab", img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/Squid%20%28Cleaned%29.png",          desc:"Cleaned, ring-cut, fry-ready" },
   { id:9,  name:"Tiger Prawns",          telugu:"పెద్ద రొయ్యలు",  weight:"500g", tag:"Premium",     cat:"Prawns & Crab", img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/Tiger%20Prawns.png",   desc:"Fresh, large, deveined" },
   { id:10, name:"Medium Prawns",         telugu:"మధ్యస్థ రొయ్యలు",weight:"500g", tag:"",            cat:"Prawns & Crab", img:"https://raw.githubusercontent.com/vamsi-trading/dhanushya-seafoods/main/public/Medium%20Prawns.png",  desc:"Cleaned & deveined" },
@@ -19,528 +24,290 @@ const products = [
 
 const cats = ["All", "Fresh Fish", "Prawns & Crab"];
 
+const featured = [
+  { name:"Tiger Prawns",  img: products.find(p=>p.id===9).img,  tall:true },
+  { name:"Silver Pomfret",img: products.find(p=>p.id===16).img, tall:false },
+  { name:"Lobster",       img: products.find(p=>p.id===17).img, tall:false },
+  { name:"Tuna",          img: products.find(p=>p.id===15).img, tall:false },
+  { name:"Seer Fish",     img: products.find(p=>p.id===1).img,  tall:false },
+];
+
+const processSteps = [
+  { title:"Harbour Catch", desc:"Hand-picked at the source, first pick of the morning." },
+  { title:"Clean & Cut",   desc:"Scaled, cut to your preferred style — pulusu, tawa, or curry cut." },
+  { title:"Weigh & Pack",  desc:"Timestamped, food-grade sealed, ready to go." },
+  { title:"Fresh Delivery",desc:"Cold chain maintained the whole way to your door." },
+];
+
 export default function DhanushyaSeafoods() {
   const [activeCat, setActiveCat] = useState("All");
-  const [scrolled, setScrolled] = useState(false);
-  const [visible, setVisible] = useState({});
   const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const [visible, setVisible] = useState({});
 
   useEffect(() => {
     const io = new IntersectionObserver(
-      entries => entries.forEach(e => {
-        if (e.isIntersecting) setVisible(v => ({ ...v, [e.target.dataset.id]: true }));
-      }), { threshold: 0.1 }
+      entries => entries.forEach(e => { if (e.isIntersecting) setVisible(v => ({ ...v, [e.target.dataset.id]: true })); }),
+      { threshold: 0.1 }
     );
     document.querySelectorAll("[data-id]").forEach(el => io.observe(el));
     return () => io.disconnect();
   }, []);
 
   const filtered = activeCat==="All" ? products : products.filter(p=>p.cat===activeCat);
-
   const reveal = (id, delay=0) => ({
     "data-id": id,
-    style: {
-      transition: `opacity 0.65s ease ${delay}ms, transform 0.65s ease ${delay}ms`,
-      opacity: visible[id] ? 1 : 0,
-      transform: visible[id] ? "translateY(0)" : "translateY(28px)",
-    }
+    style: { transition:`opacity 0.6s ease ${delay}ms, transform 0.6s ease ${delay}ms`, opacity: visible[id]?1:0, transform: visible[id]?"translateY(0)":"translateY(24px)" }
   });
-
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <div style={{ fontFamily:"'Cormorant Garamond','Georgia',serif", background:"#FDFAF6", color:"#1A2E2A", minHeight:"100vh", overflowX:"hidden" }}>
+    <div style={{ fontFamily:"'DM Sans',sans-serif", background:"#F0EBDF", color:"#1C2422", minHeight:"100vh", overflowX:"hidden" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Noto+Sans+Telugu:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=DM+Sans:wght@400;500;600&family=Noto+Sans+Telugu:wght@400;600&display=swap');
         *{box-sizing:border-box;margin:0;padding:0;}
         html{scroll-behavior:smooth;}
-        ::-webkit-scrollbar{width:5px;}
-        ::-webkit-scrollbar-track{background:#FDFAF6;}
-        ::-webkit-scrollbar-thumb{background:#0D9488;border-radius:3px;}
+        .display{font-family:'Fraunces',serif;}
         .sans{font-family:'DM Sans',sans-serif;}
-        @keyframes sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
-        @keyframes bobble{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-        @keyframes ripple{0%{transform:scale(1);opacity:0.6}100%{transform:scale(2.5);opacity:0}}
-        @keyframes wavemove{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-        @keyframes shimmer{0%{background-position:0%}100%{background-position:200%}}
-        .bobble{animation:bobble 3s ease-in-out infinite;}
-        .sway{animation:sway 4s ease-in-out infinite;transform-origin:top center;}
-        .teal-text{
-          background:linear-gradient(135deg,#0D9488,#0369A1,#0D9488);
-          background-size:200%;
-          -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-          animation:shimmer 4s linear infinite;
-        }
-        .nav-link{font-family:'DM Sans',sans-serif;font-size:13px;color:#4A6663;text-decoration:none;transition:color 0.2s;cursor:pointer;letter-spacing:0.3px;}
-        .nav-link:hover{color:#0D9488;}
-        .btn-teal{background:linear-gradient(135deg,#0D9488,#0F766E);color:white;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;border-radius:50px;transition:all 0.3s;}
-        .btn-teal:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(13,148,136,0.3);}
-        .btn-outline{background:transparent;color:#0D9488;border:1.5px solid #0D9488;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;border-radius:50px;transition:all 0.3s;}
-        .btn-outline:hover{background:#0D9488;color:white;}
-        .card{background:white;border-radius:20px;border:1px solid rgba(13,148,136,0.1);transition:all 0.3s;overflow:hidden;}
-        .card:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(13,148,136,0.12);border-color:rgba(13,148,136,0.25);}
-        .cat-btn{font-family:'DM Sans',sans-serif;font-size:13px;padding:8px 20px;border-radius:50px;border:1.5px solid rgba(13,148,136,0.2);cursor:pointer;transition:all 0.25s;color:#4A6663;background:white;}
-        .cat-btn.active{background:linear-gradient(135deg,#0D9488,#0F766E);color:white;border-color:transparent;box-shadow:0 4px 14px rgba(13,148,136,0.25);}
-        .cat-btn:hover:not(.active){border-color:#0D9488;color:#0D9488;}
-        .tag{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;background:rgba(13,148,136,0.1);color:#0D9488;letter-spacing:0.5px;}
-
-        /* ── LAYOUT GRIDS (desktop default, overridden below on mobile) ── */
-        .grid-hero{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;}
-        .grid-hiw{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1100px;margin:0 auto;}
-        .grid-story{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;max-width:1000px;margin:0 auto;}
-        .grid-story-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-        .grid-delivery{display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:860px;margin:0 auto;}
-        .grid-catering{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:48px;}
-        .grid-supply{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;}
-        .footer-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;margin-bottom:28px;}
-
-        .nav-links-desktop{display:flex;gap:28px;align-items:center;}
+        .eyebrow{font-size:11.5px;letter-spacing:3.5px;color:#E0B94A;font-weight:600;text-transform:uppercase;}
+        .btn-gold{background:#E0B94A;color:#132420;padding:15px 32px;border-radius:2px;font-size:13px;font-weight:700;letter-spacing:0.5px;text-decoration:none;display:inline-block;border:none;cursor:pointer;}
+        .btn-outline{border:1px solid rgba(243,238,221,0.4);color:#F3EEDD;padding:14px 28px;border-radius:2px;font-size:13px;font-weight:500;text-decoration:none;display:inline-block;background:transparent;cursor:pointer;}
+        .btn-wa{background:#1EBE5D;color:white;text-decoration:none;font-family:'DM Sans',sans-serif;font-weight:500;border-radius:50px;padding:10px 22px;font-size:13px;display:inline-flex;align-items:center;gap:6px;}
+        .card{background:#F8F4E5;border-radius:6px;border:1px solid rgba(19,36,32,0.08);overflow:hidden;transition:border-color 0.25s;}
+        .card:hover{border-color:#E0B94A;}
+        .cat-btn{font-family:'DM Sans',sans-serif;font-size:13px;padding:8px 20px;border-radius:6px;border:1px solid rgba(19,36,32,0.15);cursor:pointer;background:#F0EBDF;color:#5C6B72;}
+        .cat-btn.active{background:#132420;color:#E0B94A;border-color:#132420;}
+        .tag{font-size:10px;font-weight:600;padding:3px 9px;border-radius:4px;background:rgba(224,185,74,0.15);color:#8A6520;letter-spacing:0.5px;}
+        section{padding-left:6%;padding-right:6%;}
+        .nav-links-desktop{display:flex;gap:32px;align-items:center;}
         .nav-burger{display:none;}
         .mobile-menu-panel{display:none;}
 
-        section{padding-left:8%;padding-right:8%;}
-        h1{font-size:clamp(32px,4.5vw,62px);}
-
-        /* ── MOBILE (≤768px) ── */
-        @media (max-width:768px){
-          section{padding-left:6%;padding-right:6%;}
-          .grid-hero{grid-template-columns:1fr;gap:40px;}
-          .grid-hiw{grid-template-columns:1fr 1fr;gap:14px;}
-          .grid-story{grid-template-columns:1fr;gap:36px;}
-          .grid-story-stats{grid-template-columns:1fr 1fr;}
-          .grid-delivery{grid-template-columns:1fr;gap:20px;}
-          .grid-catering{grid-template-columns:1fr;gap:16px;}
-          .grid-supply{grid-template-columns:1fr 1fr;}
+        @media (max-width:900px){
+          .hero-content h1{font-size:56px !important;}
+          .hero-bottom-row{flex-direction:column;align-items:flex-start !important;gap:20px;}
+          .overlap-card{flex-direction:column;gap:18px;padding:26px 24px !important;}
+          .overlap-stat{border-left:none !important;padding-left:0 !important;border-top:1px solid rgba(19,36,32,0.1);padding-top:14px;}
+          .overlap-stat:first-child{border-top:none;padding-top:0;}
+          .bento{grid-template-columns:1fr !important;grid-template-rows:auto !important;}
+          .bento-item.tall{grid-row:auto !important;}
+          .bento-item img{height:220px !important;}
+          .products-head{flex-direction:column;align-items:flex-start !important;gap:12px;}
+          .products-head p{text-align:left !important;max-width:100% !important;}
+          .quote-text{font-size:26px !important;}
+          .process-row{flex-wrap:wrap;gap:12px !important;}
+          .process-row .ptitle{width:auto !important;}
           .nav-links-desktop{display:none;}
           .nav-burger{display:flex !important;}
           .mobile-menu-panel.open{display:flex;}
-          .hero-stats{flex-wrap:wrap;gap:22px !important;}
-          .footer-row{flex-direction:column;align-items:flex-start;text-align:left;}
-          .footer-meta{flex-direction:column;align-items:flex-start !important;gap:6px;}
-        }
-        @media (max-width:480px){
-          .grid-hiw{grid-template-columns:1fr;}
-          .grid-supply{grid-template-columns:1fr;}
+          .grid-delivery{grid-template-columns:1fr !important;}
+          .grid-catering{grid-template-columns:1fr !important;}
+          footer{flex-direction:column;align-items:flex-start !important;gap:20px;}
         }
       `}</style>
 
-      {/* ── NAV ── */}
-      <nav style={{
-        position:"fixed",top:0,left:0,right:0,zIndex:50,
-        padding:"0 6%",height:66,
-        background: scrolled || menuOpen ? "rgba(253,250,246,0.98)" : "transparent",
-        backdropFilter: scrolled || menuOpen ? "blur(20px)" : "none",
-        borderBottom: scrolled || menuOpen ? "1px solid rgba(13,148,136,0.12)" : "none",
-        transition:"all 0.4s",
-        display:"flex",alignItems:"center",justifyContent:"space-between",
-      }}>
-        <div style={{display:"flex",alignItems:"center",gap:10}}>
-          <span style={{fontSize:28}} className="bobble">🐟</span>
-          <div>
-            <div style={{fontSize:17,fontWeight:700,letterSpacing:1.5,color:"#1A2E2A",lineHeight:1}}>DHANUSHYA</div>
-            <div className="sans" style={{fontSize:9,color:"#0D9488",letterSpacing:4}}>SEAFOODS · VIZAG</div>
-          </div>
+      {/* NAV */}
+      <nav style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"26px 6%",position:"absolute",top:0,left:0,right:0,zIndex:10 }}>
+        <div className="display" style={{ fontSize:19,fontWeight:700,letterSpacing:0.5,color:"#F3EEDD" }}>
+          DHANUSHYA <span style={{ color:"#E0B94A",fontWeight:400,fontSize:11,letterSpacing:2 }}>SEAFOODS</span>
         </div>
-
-        <div className="nav-links-desktop">
-          {["Menu","Story","Catering","Delivery"].map(l=>(
-            <a key={l} className="nav-link" href={`#${l.toLowerCase()}`}>{l}</a>
-          ))}
+        <div className="nav-links-desktop sans" style={{ color:"#E4DFCF",fontSize:13 }}>
+          {["Menu","Story","Catering","Delivery"].map(l=>(<a key={l} href={`#${l.toLowerCase()}`} style={{ color:"inherit",textDecoration:"none" }}>{l}</a>))}
         </div>
-
-        <div style={{display:"flex",gap:12,alignItems:"center"}}>
-          <a href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hi! Please share today's catch and prices 🐟")}`} target="_blank" rel="noreferrer"
-            style={{display:"flex",alignItems:"center",gap:8,padding:"9px 20px",background:"#25D366",borderRadius:50,color:"white",textDecoration:"none",fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:500}}>
-            💬 Today's Rates
+        <div style={{ display:"flex",gap:12,alignItems:"center" }}>
+          <a href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hi! Please share today's catch and prices")}`} target="_blank" rel="noreferrer"
+            style={{ background:"rgba(243,238,221,0.12)",backdropFilter:"blur(6px)",border:"1px solid rgba(243,238,221,0.3)",color:"#F3EEDD",padding:"9px 20px",borderRadius:50,fontSize:13,fontWeight:500,textDecoration:"none" }}>
+            Today's Rates
           </a>
-          {/* Hamburger — mobile only */}
-          <button
-            className="nav-burger"
-            onClick={()=>setMenuOpen(o=>!o)}
-            aria-label="Menu"
-            style={{
-              width:38,height:38,border:"1.5px solid rgba(13,148,136,0.3)",borderRadius:10,
-              background:"white",alignItems:"center",justifyContent:"center",cursor:"pointer",
-              display:"none",flexDirection:"column",gap:4,
-            }}>
-            <span style={{width:16,height:2,background:"#0D9488",display:"block",transition:"transform 0.2s",transform:menuOpen?"translateY(6px) rotate(45deg)":"none"}}/>
-            <span style={{width:16,height:2,background:"#0D9488",display:"block",opacity:menuOpen?0:1,transition:"opacity 0.2s"}}/>
-            <span style={{width:16,height:2,background:"#0D9488",display:"block",transition:"transform 0.2s",transform:menuOpen?"translateY(-6px) rotate(-45deg)":"none"}}/>
+          <button className="nav-burger" onClick={()=>setMenuOpen(o=>!o)} aria-label="Menu"
+            style={{ width:38,height:38,border:"1px solid rgba(243,238,221,0.3)",borderRadius:6,background:"rgba(243,238,221,0.08)",display:"none",flexDirection:"column",gap:4,alignItems:"center",justifyContent:"center",cursor:"pointer" }}>
+            <span style={{ width:16,height:1.5,background:"#F3EEDD" }}/>
+            <span style={{ width:16,height:1.5,background:"#F3EEDD" }}/>
+            <span style={{ width:16,height:1.5,background:"#F3EEDD" }}/>
           </button>
         </div>
       </nav>
-
-      {/* Mobile menu dropdown panel */}
-      <div className={`mobile-menu-panel ${menuOpen ? "open" : ""}`} style={{
-        position:"fixed",top:66,left:0,right:0,zIndex:49,
-        background:"#FDFAF6",borderBottom:"1px solid rgba(13,148,136,0.12)",
-        flexDirection:"column",padding:"14px 6% 22px",gap:4,
-        boxShadow:"0 12px 24px rgba(0,0,0,0.06)",
-      }}>
+      <div className={`mobile-menu-panel ${menuOpen?"open":""}`} style={{ position:"fixed",top:0,left:0,right:0,bottom:0,zIndex:20,background:"#132420",flexDirection:"column",padding:"90px 6% 40px",gap:8 }}>
+        <button onClick={closeMenu} style={{ position:"absolute",top:26,right:"6%",background:"none",border:"none",color:"#F3EEDD",fontSize:24,cursor:"pointer" }}>×</button>
         {["Menu","Story","Catering","Delivery"].map(l=>(
-          <a key={l} href={`#${l.toLowerCase()}`} onClick={closeMenu} className="sans"
-            style={{padding:"12px 4px",fontSize:15,color:"#1A2E2A",textDecoration:"none",borderBottom:"1px solid rgba(13,148,136,0.08)"}}>
-            {l}
-          </a>
+          <a key={l} href={`#${l.toLowerCase()}`} onClick={closeMenu} className="display"
+            style={{ padding:"16px 4px",fontSize:24,color:"#F3EEDD",textDecoration:"none",borderBottom:"1px solid rgba(224,185,74,0.15)" }}>{l}</a>
         ))}
       </div>
 
-      {/* ── HERO ── */}
-      <section style={{
-        minHeight:"100vh",display:"flex",alignItems:"center",
-        background:"linear-gradient(160deg,#FDFAF6 0%,#F0FAF8 50%,#E6F7F5 100%)",
-        position:"relative",overflow:"hidden",
-      }}>
-        <div style={{position:"absolute",bottom:0,left:0,right:0,height:180,overflow:"hidden",opacity:0.4}}>
-          <div style={{display:"flex",animation:"wavemove 10s linear infinite",width:"200%"}}>
-            <svg viewBox="0 0 1200 180" style={{width:"50%",minWidth:600}} preserveAspectRatio="none">
-              <path d="M0 80 Q150 30 300 80 Q450 130 600 80 Q750 30 900 80 Q1050 130 1200 80 L1200 180 L0 180Z" fill="rgba(13,148,136,0.08)"/>
-            </svg>
-            <svg viewBox="0 0 1200 180" style={{width:"50%",minWidth:600}} preserveAspectRatio="none">
-              <path d="M0 80 Q150 30 300 80 Q450 130 600 80 Q750 30 900 80 Q1050 130 1200 80 L1200 180 L0 180Z" fill="rgba(13,148,136,0.08)"/>
-            </svg>
+      {/* HERO */}
+      <div style={{ position:"relative",height:840,overflow:"hidden" }}>
+        <img src={HERO_IMAGE} alt="Fishermen hauling the morning catch at Vizag harbour" style={{ position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover" }} />
+        <div style={{ position:"absolute",inset:0,background:"linear-gradient(180deg, rgba(19,36,32,0.55) 0%, rgba(19,36,32,0.25) 30%, rgba(19,36,32,0.85) 100%)" }}/>
+        <div style={{ position:"absolute",inset:0,background:"linear-gradient(90deg, rgba(10,18,15,0.88) 0%, rgba(10,18,15,0.55) 42%, rgba(10,18,15,0) 68%)" }}/>
+        <div className="hero-content" style={{ position:"relative",zIndex:2,height:"100%",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"0 6% 90px" }}>
+          <div className="eyebrow">VIZAG FISHING HARBOUR</div>
+          <h1 className="display" style={{ fontSize:104,fontWeight:600,lineHeight:0.98,color:"#F8F4E5",margin:"18px 0 0",letterSpacing:-2,textShadow:"0 6px 30px rgba(0,0,0,0.65), 0 2px 10px rgba(0,0,0,0.75)" }}>
+            Harbour to<br/><em style={{ color:"#F0C860",fontStyle:"italic",textShadow:"0 6px 30px rgba(0,0,0,0.7), 0 2px 10px rgba(0,0,0,0.85)" }}>Kitchen</em>
+          </h1>
+          <div className="hero-bottom-row" style={{ display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginTop:36 }}>
+            <p className="sans" style={{ fontSize:15,color:"#D8D2BE",lineHeight:1.8,maxWidth:380 }}>
+              Every morning since 1976, hundreds of boats have come in at Vizag's fishing harbour. We buy straight off the boats — no auction house, no middlemen.
+            </p>
+            <div style={{ display:"flex",gap:12,flexShrink:0 }}>
+              <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noreferrer" className="btn-outline">WhatsApp Us</a>
+              <button className="btn-gold" onClick={()=>document.getElementById("menu")?.scrollIntoView({behavior:"smooth"})}>SHOP FRESH CATCH</button>
+            </div>
           </div>
         </div>
+      </div>
 
-        {[["🐟","12%","20%","3s","0s"],["🦐","85%","30%","4s","1s"],["🦀","8%","70%","3.5s","0.5s"],["🐠","88%","65%","4s","1.5s"]].map(([e,l,t,dur,delay])=>(
-          <div key={l} style={{position:"absolute",left:l,top:t,fontSize:28,opacity:0.12,animation:`bobble ${dur} ease-in-out infinite`,animationDelay:delay}}>{e}</div>
+      {/* OVERLAP STAT CARD */}
+      <div className="overlap-card" style={{ position:"relative",zIndex:3,margin:"-86px 6% 0",background:"#F8F4E5",padding:"34px 40px",display:"flex",boxShadow:"0 20px 50px rgba(19,36,32,0.18)" }}>
+        {[["1976","Harbour established"],["700+","Boats docked daily"],["Direct","Off the boat"],["Zero","Middlemen"]].map(([num,lbl],i)=>(
+          <div key={num} className="overlap-stat" style={{ flex:1,padding: i===0?"0 28px 0 0":"0 28px",borderLeft: i===0?"none":"1px solid rgba(19,36,32,0.1)" }}>
+            <div className="display" style={{ fontSize:34,fontWeight:600,color:"#132420" }}>{num}</div>
+            <div className="sans" style={{ fontSize:11.5,color:"#6B6355",marginTop:4,letterSpacing:0.3 }}>{lbl}</div>
+          </div>
         ))}
+      </div>
 
-        <div style={{position:"relative",zIndex:2,padding:"130px 8% 80px",maxWidth:1200,margin:"0 auto",width:"100%"}}>
-          <div className="grid-hero">
-            <div>
-              <div className="sans" style={{fontSize:11,letterSpacing:5,color:"#0D9488",marginBottom:18,textTransform:"uppercase",fontWeight:600}}>
-                Vizag Harbour · Caught Daily at 5AM
-              </div>
-              <h1 style={{fontWeight:700,lineHeight:1.1,marginBottom:22,color:"#1A2E2A"}}>
-                The Freshest Catch<br/>
-                <span className="teal-text">Harbour to Kitchen</span>
-              </h1>
-              <p className="sans" style={{fontSize:16,color:"#4A6663",lineHeight:1.85,marginBottom:32,maxWidth:430}}>
-                We're at Vizag harbour every morning at 5AM. Cleaned, cut and packed by noon. On your plate by evening. Every label shows the exact catch time — because freshness is a timestamp, not a tagline.
-              </p>
-              <div style={{display:"flex",gap:14,flexWrap:"wrap"}}>
-                <button className="btn-teal" style={{padding:"13px 30px",fontSize:15}}
-                  onClick={()=>document.getElementById("menu")?.scrollIntoView({behavior:"smooth"})}>
-                  Shop Fresh Catch →
-                </button>
-                <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noreferrer"
-                  style={{display:"flex",alignItems:"center",gap:8,padding:"13px 26px",borderRadius:50,border:"1.5px solid rgba(13,148,136,0.4)",color:"#0D9488",textDecoration:"none",fontSize:15,fontFamily:"'DM Sans',sans-serif",fontWeight:500,background:"white"}}>
-                  💬 WhatsApp
-                </a>
-              </div>
-              <div className="sans hero-stats" style={{display:"flex",gap:36,marginTop:44}}>
-                {[["5AM","Daily Harbour Catch"],["2hr","Sea to Packed"],["0°C","Cold Chain Intact"]].map(([n,l])=>(
-                  <div key={n}>
-                    <div style={{fontSize:24,fontWeight:700,color:"#0D9488"}}>{n}</div>
-                    <div style={{fontSize:11,color:"#7A9E9A",letterSpacing:0.5,marginTop:2}}>{l}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",position:"relative"}}>
-              <div style={{position:"relative",marginBottom:20}}>
-                <div style={{width:80,height:26,border:"4px solid #8B6914",borderBottom:"none",borderRadius:"40px 40px 0 0",margin:"0 auto",position:"relative",top:6,zIndex:2}}/>
-                <div style={{width:180,height:200,background:"linear-gradient(160deg,#F0C45A,#C8960A,#A87A08)",borderRadius:"12px 12px 50px 50px",position:"relative",overflow:"hidden",border:"3px solid #A87A08",boxShadow:"inset -12px 0 24px rgba(0,0,0,0.15), 0 12px 40px rgba(168,122,8,0.25)"}}>
-                  <div style={{position:"absolute",top:44,left:0,right:0,height:4,background:"rgba(0,0,0,0.1)"}}/>
-                  <div style={{position:"absolute",top:80,left:0,right:0,height:3,background:"rgba(0,0,0,0.08)"}}/>
-                  <div style={{position:"absolute",top:10,left:16,width:22,height:120,background:"rgba(255,255,255,0.2)",borderRadius:12,transform:"rotate(-8deg)"}}/>
-                  <div style={{position:"absolute",bottom:0,left:0,right:0,height:"55%",background:"linear-gradient(180deg,rgba(13,148,136,0.5) 0%,rgba(7,94,84,0.8) 100%)",borderRadius:"0 0 47px 47px"}}>
-                    <div style={{position:"absolute",top:8,left:"50%",transform:"translateX(-50%)",width:60,height:20,borderRadius:"50%",border:"1.5px solid rgba(255,255,255,0.3)",animation:"ripple 2s ease-out infinite"}}/>
-                    <div style={{position:"absolute",top:8,left:"50%",transform:"translateX(-50%)",width:40,height:14,borderRadius:"50%",border:"1.5px solid rgba(255,255,255,0.2)",animation:"ripple 2s ease-out infinite",animationDelay:"0.5s"}}/>
-                    <div style={{position:"absolute",top:-16,left:"50%",transform:"translateX(-60%)",fontSize:32,animation:"bobble 2s ease-in-out infinite"}}>🐟</div>
-                    <div style={{position:"absolute",top:-10,right:22,fontSize:22,animation:"bobble 2.5s ease-in-out infinite",animationDelay:"0.8s"}}>🦐</div>
-                  </div>
-                  <div style={{position:"absolute",top:14,left:0,right:0,textAlign:"center"}}>
-                    <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:13,fontWeight:700,color:"rgba(255,255,255,0.9)",letterSpacing:2}}>DHANUSHYA</div>
-                    <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:9,color:"rgba(255,255,255,0.65)",letterSpacing:3}}>SEAFOODS</div>
-                  </div>
-                </div>
-              </div>
-              <div style={{background:"white",borderRadius:16,padding:"14px 22px",border:"1px solid rgba(13,148,136,0.15)",boxShadow:"0 8px 24px rgba(13,148,136,0.1)",textAlign:"center"}}>
-                <div className="sans" style={{fontSize:10,color:"#0D9488",letterSpacing:3,marginBottom:4}}>TODAY'S CATCH</div>
-                <div style={{fontSize:15,fontWeight:600,color:"#1A2E2A"}}>Cut at Harbour 5:47 AM</div>
-                <div className="sans" style={{fontSize:11,color:"#7A9E9A",marginTop:2}}>Packed by 12:00 PM · Delivering by 5PM</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── HOW IT WORKS ── */}
-      <section style={{padding:"80px 8%",background:"white"}}>
-        <div {...reveal("hiw")} style={{textAlign:"center",marginBottom:52}}>
-          <div className="sans" style={{fontSize:11,letterSpacing:5,color:"#0D9488",marginBottom:10,fontWeight:600}}>THE PROCESS</div>
-          <h2 style={{fontSize:"clamp(26px,4vw,36px)",fontWeight:700,color:"#1A2E2A"}}>From Sea to Your Plate</h2>
-        </div>
-        <div className="grid-hiw">
-          {[
-            ["🌅","5:00 AM","Harbour Catch","Our buyer picks the freshest catch at Vizag harbour — first pick every morning."],
-            ["🔪","7:00 AM","Clean & Cut","Fish cleaned, scaled, cut to your preferred style — pulusu, tawa, or curry cut."],
-            ["📦","11:00 AM","Weigh & Pack","Packed in food-grade pouches with the exact catch timestamp on every label."],
-            ["🚴","4:00 PM","Fresh Delivery","Delivered same evening or next morning — cold chain maintained throughout."],
-          ].map(([ico,time,title,desc],i)=>(
-            <div key={i} {...reveal(`hiw${i}`,i*100)} style={{background:"#F8FFFE",borderRadius:20,border:"1px solid rgba(13,148,136,0.1)",padding:"28px 20px",position:"relative"}}>
-              <div className="sans" style={{fontSize:11,color:"#0D9488",letterSpacing:2,marginBottom:10,fontWeight:600}}>{time}</div>
-              <div style={{fontSize:38,marginBottom:14}}>{ico}</div>
-              <div style={{fontSize:16,fontWeight:700,color:"#1A2E2A",marginBottom:10}}>{title}</div>
-              <p className="sans" style={{fontSize:13,color:"#6A8E8A",lineHeight:1.75}}>{desc}</p>
-              <div className="sans" style={{position:"absolute",top:20,right:20,fontSize:40,fontWeight:900,color:"rgba(13,148,136,0.06)"}}>{i+1}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section id="menu" style={{padding:"80px 8%",background:"#FDFAF6"}}>
-        <div {...reveal("menu-hdr")} style={{textAlign:"center",marginBottom:40}}>
-          <div className="sans" style={{fontSize:11,letterSpacing:5,color:"#0D9488",marginBottom:10,fontWeight:600}}>FRESH TODAY</div>
-          <h2 style={{fontSize:"clamp(26px,4vw,36px)",fontWeight:700,color:"#1A2E2A"}}>Today's Catch</h2>
-          <p className="sans" style={{fontSize:14,color:"#6A8E8A",marginTop:10,marginBottom:20}}>Cleaned & cut to order · All items subject to availability</p>
-          <div style={{
-            display:"inline-flex",alignItems:"center",gap:12,flexWrap:"wrap",justifyContent:"center",
-            background:"#F0FAF8",border:"1.5px solid rgba(13,148,136,0.2)",
-            borderRadius:16,padding:"14px 24px",marginBottom:8,
-          }}>
-            <span style={{fontSize:22}}>🐟</span>
-            <div style={{textAlign:"left"}}>
-              <div className="sans" style={{fontSize:13,fontWeight:600,color:"#1A2E2A"}}>Prices change daily based on harbour catch</div>
-              <div className="sans" style={{fontSize:12,color:"#6A8E8A",marginTop:2}}>WhatsApp us every morning for today's rates & availability</div>
-            </div>
-            <a href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hi! Please share today's catch and prices 🐟")}`}
-              target="_blank" rel="noreferrer"
-              style={{display:"flex",alignItems:"center",gap:6,padding:"9px 18px",background:"#25D366",borderRadius:50,color:"white",textDecoration:"none",fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:500,whiteSpace:"nowrap"}}>
-              💬 Get Today's Rates
-            </a>
-          </div>
-        </div>
-        <div style={{display:"flex",gap:10,justifyContent:"center",marginBottom:40,flexWrap:"wrap"}}>
-          {cats.map(c=>(
-            <button key={c} className={`cat-btn ${activeCat===c?"active":""}`} onClick={()=>setActiveCat(c)}>{c}</button>
-          ))}
-        </div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(160px,1fr))",gap:18,maxWidth:1200,margin:"0 auto"}}>
-          {filtered.map((p,i)=>(
-            <div key={p.id} {...reveal(`p${p.id}`,i*50)} className="card" style={{padding:0,overflow:"hidden"}}>
-              <div style={{height:160,overflow:"hidden",position:"relative",background:"#F0FAF8"}}>
-                <img
-                  src={p.img}
-                  alt={p.name}
-                  style={{width:"100%",height:"100%",objectFit:"cover",transition:"transform 0.4s"}}
-                  onError={e=>{e.currentTarget.style.display="none";e.currentTarget.parentNode.style.fontSize="60px";e.currentTarget.parentNode.style.display="flex";e.currentTarget.parentNode.style.alignItems="center";e.currentTarget.parentNode.style.justifyContent="center";}}
-                />
-                {p.tag&&(
-                  <span className="tag" style={{position:"absolute",top:10,right:10,background:"rgba(255,255,255,0.92)",backdropFilter:"blur(4px)"}}>
-                    {p.tag}
-                  </span>
-                )}
-              </div>
-              <div style={{padding:"18px 18px 20px"}}>
-                <div style={{fontSize:16,fontWeight:700,color:"#1A2E2A",marginBottom:2}}>{p.name}</div>
-                <div style={{fontSize:13,color:"#0D9488",marginBottom:3,fontFamily:"'Noto Sans Telugu',sans-serif"}}>{p.telugu}</div>
-                <div className="sans" style={{fontSize:12,color:"#9ABAB6",marginBottom:4}}>{p.weight}</div>
-                <div className="sans" style={{fontSize:12,color:"#7A9E9A",marginBottom:16,lineHeight:1.6}}>{p.desc}</div>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8}}>
-                  <div>
-                    <div className="sans" style={{fontSize:10,color:"#9ABAB6",letterSpacing:1}}>TODAY'S PRICE</div>
-                    <div className="sans" style={{fontSize:13,fontWeight:600,color:"#0D9488"}}>WhatsApp to enquire</div>
-                  </div>
-                  <a href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Hi! I'm interested in ${p.name} (${p.weight}). What's today's price and availability? 🐟`)}`}
-                    target="_blank" rel="noreferrer"
-                    style={{display:"flex",alignItems:"center",gap:6,padding:"8px 14px",background:"#25D366",borderRadius:50,color:"white",textDecoration:"none",fontFamily:"'DM Sans',sans-serif",fontSize:12,fontWeight:500}}>
-                    💬 Order
-                  </a>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── STORY ── */}
-      <section id="story" style={{padding:"80px 8%",background:"white"}}>
-        <div className="grid-story">
-          <div {...reveal("story-l")}>
-            <div className="sans" style={{fontSize:11,letterSpacing:5,color:"#0D9488",marginBottom:16,fontWeight:600}}>WHY DHANUSHYA</div>
-            <h2 style={{fontSize:"clamp(28px,4.5vw,38px)",fontWeight:700,lineHeight:1.2,marginBottom:22,color:"#1A2E2A"}}>
-              We're at the Harbour<br/><em style={{color:"#0D9488"}}>Before You Wake Up</em>
-            </h2>
-            <p className="sans" style={{fontSize:15,color:"#4A6663",lineHeight:1.9,marginBottom:18}}>
-              We're at Vizag harbour at 5AM every morning — hand-picking the day's finest catch. Fresh fish, prawns, crab, and selected frozen varieties, all sourced directly and delivered to your kitchen.
-            </p>
-            <p className="sans" style={{fontSize:15,color:"#4A6663",lineHeight:1.9,marginBottom:28}}>
-              Every pack has a timestamp. <strong style={{color:"#1A2E2A"}}>Caught at 5:47 AM. Cleaned by 8 AM. Packed by noon.</strong> Not as a story. As a fact, printed on the label.
-            </p>
-            <div style={{borderLeft:"3px solid #0D9488",paddingLeft:20,fontStyle:"italic",fontSize:16,color:"#2A4E4A",lineHeight:1.75}}>
-              "If you have time to go to the harbour yourself, go. We're for the days when you don't."
-            </div>
-          </div>
-          <div {...reveal("story-r",200)}>
-            <div className="grid-story-stats">
-              {[["🐟","13+","Fresh SKUs Daily"],["⏱️","< 2hr","Sea to Packed"],["📍","All Vizag","Delivery"],["⭐","Zero","Middlemen"]].map(([ico,n,l])=>(
-                <div key={l} style={{background:"#F0FAF8",border:"1px solid rgba(13,148,136,0.12)",borderRadius:18,padding:"26px 18px",textAlign:"center"}}>
-                  <div style={{fontSize:30,marginBottom:8}}>{ico}</div>
-                  <div style={{fontSize:26,fontWeight:700,color:"#0D9488"}}>{n}</div>
-                  <div className="sans" style={{fontSize:11,color:"#7A9E9A",marginTop:4}}>{l}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── DELIVERY ── */}
-      <section id="delivery" style={{padding:"80px 8%",background:"#F0FAF8"}}>
-        <div {...reveal("del-hdr")} style={{textAlign:"center",marginBottom:48}}>
-          <div className="sans" style={{fontSize:11,letterSpacing:5,color:"#0D9488",marginBottom:10,fontWeight:600}}>COVERAGE</div>
-          <h2 style={{fontSize:"clamp(26px,4vw,36px)",fontWeight:700,color:"#1A2E2A"}}>Delivery Areas & Slots</h2>
-        </div>
-        <div className="grid-delivery">
-          <div {...reveal("del-a")} className="card" style={{padding:"32px 26px"}}>
-            <div style={{fontSize:20,fontWeight:700,color:"#1A2E2A",marginBottom:6}}>📍 Delivery Zones</div>
-            <div className="sans" style={{fontSize:13,color:"#0D9488",marginBottom:18,fontWeight:600}}>All Areas Across Visakhapatnam</div>
-            {[
-              "MVP Colony","Seethammadhara","Madhurawada","Rushikonda",
-              "PM Palem","Dwaraka Nagar","Gajuwaka","Bheemunipatnam",
-              "Kommadi","Lawsons Bay","Siripuram","NAD Junction",
-              "Akkayyapalem","Gopalapatnam","Pendurthi","Yelamanchili",
-            ].map(z=>(
-              <div key={z} className="sans" style={{display:"flex",alignItems:"center",gap:10,marginBottom:10,fontSize:13,color:"#4A6663"}}>
-                <span style={{color:"#0D9488",fontWeight:700}}>→</span> {z}
-              </div>
-            ))}
-            <div style={{marginTop:18,padding:"12px 14px",background:"#F0FAF8",borderRadius:10,border:"1px solid rgba(13,148,136,0.15)"}}>
-              <div className="sans" style={{fontSize:12,color:"#0D9488",fontWeight:600}}>📞 Don't see your area?</div>
-              <div className="sans" style={{fontSize:12,color:"#6A8E8A",marginTop:4}}>WhatsApp us — we deliver anywhere in Vizag for bulk orders.</div>
-            </div>
-          </div>
-          <div {...reveal("del-b",150)} style={{display:"flex",flexDirection:"column",gap:16}}>
-            <div className="card" style={{padding:"26px 24px"}}>
-              <div style={{fontSize:18,fontWeight:700,color:"#1A2E2A",marginBottom:6}}>🕓 Evening Slot</div>
-              <div className="sans" style={{fontSize:16,color:"#0D9488",fontWeight:600,marginBottom:6}}>4:00 PM – 7:00 PM</div>
-              <div className="sans" style={{fontSize:13,color:"#7A9E9A"}}>Order by 1:00 PM same day</div>
-            </div>
-            <div className="card" style={{padding:"26px 24px"}}>
-              <div style={{fontSize:18,fontWeight:700,color:"#1A2E2A",marginBottom:6}}>🌅 Morning Slot</div>
-              <div className="sans" style={{fontSize:16,color:"#0D9488",fontWeight:600,marginBottom:6}}>7:00 AM – 9:00 AM</div>
-              <div className="sans" style={{fontSize:13,color:"#7A9E9A"}}>Order by 10:00 PM previous night</div>
-            </div>
-            <div className="sans" style={{fontSize:13,color:"#6A8E8A",textAlign:"center",padding:"8px 0"}}>
-              Free delivery above ₹699 · ₹39 below · Min order ₹399
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── CATERING & FUNCTIONS ── */}
-      <section id="catering" style={{padding:"80px 8%",background:"#1A2E2A",position:"relative",overflow:"hidden"}}>
-        <div style={{position:"absolute",top:0,left:0,right:0,height:4,background:"linear-gradient(90deg,transparent,#0D9488,transparent)"}}/>
-
-        <div style={{maxWidth:1100,margin:"0 auto"}}>
-          <div {...reveal("cat-hdr")} style={{textAlign:"center",marginBottom:52}}>
-            <div className="sans" style={{fontSize:11,letterSpacing:5,color:"#0D9488",marginBottom:10,fontWeight:600}}>LARGE ORDERS WELCOME</div>
-            <h2 style={{fontSize:"clamp(26px,4.5vw,38px)",fontWeight:700,color:"white",marginBottom:14}}>Catering & Functions</h2>
-            <p className="sans" style={{fontSize:15,color:"rgba(240,250,248,0.55)",maxWidth:520,margin:"0 auto",lineHeight:1.8}}>
-              Marriages, engagements, housewarming, corporate events — we supply fresh seafood in any quantity, cleaned and cut to your requirement. No minimum order.
-            </p>
-          </div>
-
-          <div className="grid-catering">
-            {[
-              ["💍","Marriages & Receptions","Hundreds of kilos of seer, rohu, prawns, crab — all cleaned and portioned for your caterer. Delivered the morning of the function."],
-              ["🏠","Housewarming & Griha Pravesh","Fresh fish bundles for intimate functions. We coordinate timing with your kitchen staff so everything is fresh when cooking begins."],
-              ["🏢","Corporate & Bulk Orders","Regular large-volume supply for canteens, hotels, restaurants, and event caterers. Consistent quality, consistent timing."],
-            ].map(([ico,title,desc],i)=>(
-              <div key={i} {...reveal(`cat${i}`,i*120)} style={{
-                background:"rgba(255,255,255,0.05)",
-                border:"1px solid rgba(13,148,136,0.25)",
-                borderRadius:20,padding:"30px 24px",
-              }}>
-                <div style={{fontSize:38,marginBottom:16}}>{ico}</div>
-                <div style={{fontSize:17,fontWeight:700,color:"white",marginBottom:10}}>{title}</div>
-                <p className="sans" style={{fontSize:13,color:"rgba(240,250,248,0.55)",lineHeight:1.75}}>{desc}</p>
-              </div>
-            ))}
-          </div>
-
-          <div {...reveal("cat-supply")} style={{background:"rgba(13,148,136,0.1)",border:"1px solid rgba(13,148,136,0.2)",borderRadius:20,padding:"32px 36px",marginBottom:36}}>
-            <div style={{fontSize:18,fontWeight:700,color:"white",marginBottom:20}}>What We Can Supply for Your Function</div>
-            <div className="grid-supply">
-              {[
-                ["🐟","Seer Fish (Vanjaram)","Any quantity"],
-                ["🐠","Rohu / Catla","Curry cut or whole"],
-                ["🐡","Pomfret","Tawa or curry ready"],
-                ["🦐","Tiger & Medium Prawns","Cleaned, deveined"],
-                ["🦀","Crab","Cleaned, curry cut"],
-                ["🦑","Squid","Cleaned, ring cut"],
-                ["🐟","Sardines / Mackerel","Bulk fry packs"],
-                ["🐡","Red Snapper","Premium functions"],
-              ].map(([ico,name,note])=>(
-                <div key={name} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",background:"rgba(255,255,255,0.04)",borderRadius:10,border:"1px solid rgba(255,255,255,0.06)"}}>
-                  <span style={{fontSize:20}}>{ico}</span>
-                  <div>
-                    <div className="sans" style={{fontSize:12,fontWeight:600,color:"rgba(240,250,248,0.85)"}}>{name}</div>
-                    <div className="sans" style={{fontSize:10,color:"rgba(240,250,248,0.35)",marginTop:1}}>{note}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div {...reveal("cat-cta")} style={{textAlign:"center"}}>
-            <div className="sans" style={{fontSize:14,color:"rgba(240,250,248,0.5)",marginBottom:20}}>
-              Call us at least <strong style={{color:"rgba(240,250,248,0.8)"}}>2 days in advance</strong> for bulk orders. Same-day possible for orders under 10kg.
-            </div>
-            <div style={{display:"flex",gap:14,justifyContent:"center",flexWrap:"wrap"}}>
-              <a href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hi Dhanushya Seafoods! I need to enquire about bulk/catering supply for a function. Please share details.")}`}
-                target="_blank" rel="noreferrer"
-                style={{display:"flex",alignItems:"center",gap:10,padding:"14px 32px",background:"#25D366",borderRadius:50,color:"white",textDecoration:"none",fontFamily:"'DM Sans',sans-serif",fontSize:15,fontWeight:600,boxShadow:"0 6px 20px rgba(37,211,102,0.3)"}}>
-                💬 WhatsApp for Bulk Enquiry
-              </a>
-              <div style={{display:"flex",alignItems:"center",gap:10,padding:"14px 28px",border:"1.5px solid rgba(13,148,136,0.4)",borderRadius:50,color:"rgba(240,250,248,0.7)",fontFamily:"'DM Sans',sans-serif",fontSize:14}}>
-                📞 Call for same-day bulk
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── FOOTER ── */}
-      <footer style={{padding:"44px 8% 28px",background:"#1A2E2A",color:"rgba(240,250,248,0.8)"}}>
-        <div className="footer-row">
+      {/* FEATURED BENTO */}
+      <section style={{ padding:"130px 6% 100px",background:"#F0EBDF" }}>
+        <div className="products-head" style={{ display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:44 }}>
           <div>
-            <div style={{fontSize:18,fontWeight:700,letterSpacing:1.5,color:"white"}}>DHANUSHYA SEAFOODS</div>
-            <div className="sans" style={{fontSize:11,color:"rgba(240,250,248,0.4)",marginTop:4,letterSpacing:2}}>HARBOUR FRESH · VIZAG</div>
+            <div className="eyebrow">FRESH TODAY</div>
+            <h2 className="display" style={{ fontSize:46,fontWeight:600,marginTop:10 }}>Today's Catch</h2>
           </div>
-          <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noreferrer"
-            style={{display:"flex",alignItems:"center",gap:8,padding:"10px 24px",background:"#25D366",borderRadius:50,color:"white",textDecoration:"none",fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:500}}>
-            💬 Order on WhatsApp
-          </a>
+          <p className="sans" style={{ fontSize:13.5,color:"#6B6355",maxWidth:280,textAlign:"right",lineHeight:1.6 }}>
+            Cleaned and cut to order. All items subject to availability — WhatsApp us each morning for the day's prices.
+          </p>
         </div>
-        <div className="sans footer-meta" style={{display:"flex",justifyContent:"space-between",flexWrap:"wrap",gap:10,fontSize:11,color:"rgba(240,250,248,0.25)",borderTop:"1px solid rgba(255,255,255,0.08)",paddingTop:18}}>
-          <span>© 2025 Dhanushya Seafoods · Visakhapatnam</span>
-          <span>FSSAI Lic. No: XXXXXXXXXXXX</span>
-          <span>All prices inclusive of GST</span>
+        <div className="bento" style={{ display:"grid",gridTemplateColumns:"1.4fr 1fr 1fr",gridTemplateRows:"260px 260px",gap:14,maxWidth:1300,margin:"0 auto" }}>
+          {featured.map((f)=>(
+            <div key={f.name} className={`bento-item ${f.tall?"tall":""}`} style={{ position:"relative",overflow:"hidden",borderRadius:4, gridRow: f.tall?"1 / 3":"auto" }}>
+              <img src={f.img} alt={f.name} style={{ width:"100%",height:"100%",objectFit:"cover",display:"block" }}/>
+              <div style={{ position:"absolute",bottom:0,left:0,right:0,padding:"20px 22px",background:"linear-gradient(0deg, rgba(19,36,32,0.85) 0%, rgba(19,36,32,0) 100%)" }}>
+                <div className="display" style={{ fontWeight:600,fontSize:19,color:"#F8F4E5" }}>{f.name}</div>
+                <div className="sans" style={{ fontSize:11.5,color:"#E0B94A",marginTop:2 }}>WhatsApp to enquire</div>
+              </div>
+            </div>
+          ))}
         </div>
-      </footer>
+      </section>
 
-      {/* ── FLOATING WA ── */}
-      <a href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hi! Please share today's catch and prices 🐟")}`} target="_blank" rel="noreferrer" style={{
-        position:"fixed",bottom:28,right:28,zIndex:45,
-        width:56,height:56,borderRadius:"50%",
-        background:"linear-gradient(135deg,#25D366,#128C7E)",
-        display:"flex",alignItems:"center",justifyContent:"center",
-        fontSize:24,textDecoration:"none",
-        boxShadow:"0 6px 20px rgba(37,211,102,0.35)",
-      }}>
-        💬
-      </a>
+      {/* QUOTE */}
+      <section id="story" style={{ padding:"110px 6%",background:"#132420" }}>
+        <div style={{ maxWidth:920,margin:"0 auto" }}>
+          <div style={{ maxWidth:820 }}>
+            <div className="eyebrow">WHY DHANUSHYA</div>
+            <div className="display quote-text" style={{ fontStyle:"italic",fontSize:44,lineHeight:1.3,color:"#F3EEDD",margin:"22px 0 30px" }}>
+              "If you have time to go to the harbour <em style={{ color:"#E0B94A" }}>yourself, go.</em> We're for the days when you don't."
+            </div>
+            <div className="sans" style={{ fontSize:13,color:"#8FA39C" }}>
+              Every pack carries its own timestamp — caught, cleaned, and packed the same day, not shipped from a warehouse.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PROCESS */}
+      <section style={{ padding:"90px 6% 100px",background:"#F0EBDF" }}>
+        <div className="eyebrow">THE PROCESS</div>
+        <h2 className="display" style={{ fontSize:44,fontWeight:600,marginTop:10 }}>From Sea to Your Plate</h2>
+        <div style={{ maxWidth:900,margin:"50px auto 0" }}>
+          {processSteps.map((s,i)=>(
+            <div key={s.title} className="process-row" style={{ display:"flex",alignItems:"baseline",gap:32,padding:"28px 0",borderBottom:"1px solid rgba(19,36,32,0.1)" }}>
+              <div className="display" style={{ fontSize:52,fontWeight:600,color:"rgba(19,36,32,0.12)",width:80,flexShrink:0 }}>{String(i+1).padStart(2,"0")}</div>
+              <div className="display ptitle" style={{ fontSize:22,fontWeight:600,width:200,flexShrink:0 }}>{s.title}</div>
+              <div className="sans" style={{ fontSize:13.5,color:"#6B6355",lineHeight:1.6 }}>{s.desc}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* FULL MENU */}
+      <section id="menu" style={{ padding:"90px 6%",background:"#F8F4E5" }}>
+        <div style={{ textAlign:"center",marginBottom:40 }}>
+          <div className="eyebrow" style={{ textAlign:"center" }}>BROWSE</div>
+          <h2 className="display" style={{ fontSize:38,fontWeight:600,marginTop:10 }}>Full Menu</h2>
+          <p className="sans" style={{ fontSize:14,color:"#6B6355",marginTop:10 }}>All items subject to availability · WhatsApp us for today's prices</p>
+        </div>
+        <div style={{ display:"flex",gap:10,justifyContent:"center",marginBottom:40,flexWrap:"wrap" }}>
+          {cats.map(c=>(<button key={c} className={`cat-btn ${activeCat===c?"active":""}`} onClick={()=>setActiveCat(c)}>{c}</button>))}
+        </div>
+        <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:18,maxWidth:1200,margin:"0 auto" }}>
+          {filtered.map((p,i)=>(
+            <div key={p.id} {...reveal(`p${p.id}`,i*40)} className="card">
+              <div style={{ height:160,overflow:"hidden",position:"relative",background:"#EFE8D8" }}>
+                <img src={p.img} alt={p.name} style={{ width:"100%",height:"100%",objectFit:"cover" }} onError={e=>{e.currentTarget.style.display="none";}}/>
+                {p.tag && <span className="tag" style={{ position:"absolute",top:10,right:10 }}>{p.tag}</span>}
+              </div>
+              <div style={{ padding:"16px 16px 18px" }}>
+                <div className="display" style={{ fontSize:15,fontWeight:600 }}>{p.name}</div>
+                <div style={{ fontSize:13,color:"#B5872E",fontFamily:"'Noto Sans Telugu',sans-serif",marginTop:2 }}>{p.telugu}</div>
+                <div className="sans" style={{ fontSize:12,color:"#8A8272",margin:"4px 0 14px" }}>{p.weight} · {p.desc}</div>
+                <a href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Hi! I'm interested in ${p.name} (${p.weight}). What's today's price and availability?`)}`} target="_blank" rel="noreferrer" className="btn-wa">Order</a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* DELIVERY */}
+      <section id="delivery" style={{ padding:"90px 6%",background:"#F0EBDF" }}>
+        <div style={{ textAlign:"center",marginBottom:44 }}>
+          <div className="eyebrow" style={{ textAlign:"center" }}>COVERAGE</div>
+          <h2 className="display" style={{ fontSize:38,fontWeight:600,marginTop:10 }}>Delivery Areas & Slots</h2>
+        </div>
+        <div className="grid-delivery" style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:28,maxWidth:860,margin:"0 auto" }}>
+          <div className="card" style={{ padding:"30px 26px" }}>
+            <div className="display" style={{ fontSize:18,fontWeight:600 }}>Delivery Zones</div>
+            <div className="sans" style={{ fontSize:13,color:"#B5872E",fontWeight:600,margin:"6px 0 16px" }}>All Areas Across Visakhapatnam</div>
+            {["MVP Colony","Seethammadhara","Madhurawada","Rushikonda","PM Palem","Dwaraka Nagar","Gajuwaka","Bheemunipatnam","Kommadi","Lawsons Bay","Siripuram","NAD Junction"].map(z=>(
+              <div key={z} className="sans" style={{ fontSize:13,color:"#5C6B72",marginBottom:8 }}>— {z}</div>
+            ))}
+          </div>
+          <div style={{ display:"flex",flexDirection:"column",gap:16 }}>
+            <div className="card" style={{ padding:"26px 24px" }}>
+              <div className="display" style={{ fontSize:17,fontWeight:600 }}>Evening Slot</div>
+              <div className="sans" style={{ fontSize:13,color:"#8A8272",marginTop:6 }}>Order earlier in the day for same-day delivery</div>
+            </div>
+            <div className="card" style={{ padding:"26px 24px" }}>
+              <div className="display" style={{ fontSize:17,fontWeight:600 }}>Morning Slot</div>
+              <div className="sans" style={{ fontSize:13,color:"#8A8272",marginTop:6 }}>Order the night before for morning delivery</div>
+            </div>
+            <div className="sans" style={{ fontSize:13,color:"#6B6355",textAlign:"center" }}>Free delivery above ₹699 · ₹39 below · Min order ₹399</div>
+          </div>
+        </div>
+      </section>
+
+      {/* CATERING */}
+      <section id="catering" style={{ padding:"90px 6%",background:"#132420" }}>
+        <div style={{ maxWidth:1100,margin:"0 auto" }}>
+          <div style={{ textAlign:"center",marginBottom:52 }}>
+            <div className="eyebrow" style={{ textAlign:"center" }}>LARGE ORDERS WELCOME</div>
+            <h2 className="display" style={{ fontSize:38,fontWeight:600,color:"#F3EEDD",marginTop:10 }}>Catering & Functions</h2>
+            <p className="sans" style={{ fontSize:14,color:"#8FA39C",maxWidth:480,margin:"12px auto 0" }}>Marriages, housewarming, corporate events — fresh seafood in any quantity, no minimum order.</p>
+          </div>
+          <div className="grid-catering" style={{ display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:20,marginBottom:36 }}>
+            {[["Marriages & Receptions","Cleaned and portioned for your caterer, delivered the morning of the function."],
+              ["Housewarming","We coordinate timing with your kitchen staff so everything is fresh when cooking begins."],
+              ["Corporate & Bulk","Regular large-volume supply for canteens, hotels, and event caterers."]].map(([t,d])=>(
+              <div key={t} style={{ background:"rgba(224,185,74,0.06)",border:"1px solid rgba(224,185,74,0.15)",padding:"26px 24px" }}>
+                <div className="display" style={{ fontSize:17,fontWeight:600,color:"#F3EEDD",marginBottom:8 }}>{t}</div>
+                <p className="sans" style={{ fontSize:13,color:"#8FA39C",lineHeight:1.7 }}>{d}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{ textAlign:"center" }}>
+            <a href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hi Dhanushya Seafoods! I need to enquire about bulk/catering supply for a function.")}`} target="_blank" rel="noreferrer" className="btn-wa" style={{ fontSize:14,padding:"14px 30px" }}>WhatsApp for Bulk Enquiry</a>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer style={{ background:"#132420",color:"#8FA39C",padding:"60px 6% 30px",display:"flex",justifyContent:"space-between",alignItems:"flex-end" }}>
+        <div>
+          <div className="display" style={{ color:"#F3EEDD",fontSize:22,fontWeight:700 }}>DHANUSHYA SEAFOODS</div>
+          <div className="sans" style={{ fontSize:11,color:"#E0B94A",letterSpacing:2,marginTop:8 }}>HARBOUR FRESH · VIZAG</div>
+        </div>
+        <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noreferrer" className="btn-gold" style={{ padding:"13px 28px" }}>Order on WhatsApp</a>
+      </footer>
     </div>
   );
 }
