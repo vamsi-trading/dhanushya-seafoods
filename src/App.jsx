@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const WHATSAPP = "919949682097"; // TODO: confirm this matches what's live on GitHub
+const WHATSAPP = "919999999999"; // TODO: confirm this matches what's live on GitHub
 
 // TODO: Upload IMG_1384.JPG (the illustrated harbour hero) to your GitHub repo's
 // /public folder, then point this at it the same way your product photos work, e.g.:
@@ -271,7 +271,7 @@ export default function DhanushyaSeafoods() {
               <div className="display" style={{ fontSize:17,fontWeight:600 }}>Morning Slot</div>
               <div className="sans" style={{ fontSize:13,color:"#8A8272",marginTop:6 }}>Order the night before for morning delivery</div>
             </div>
-          
+            <div className="sans" style={{ fontSize:13,color:"#6B6355",textAlign:"center" }}>Free delivery above ₹699 · ₹39 below · Min order ₹399</div>
           </div>
         </div>
       </section>
