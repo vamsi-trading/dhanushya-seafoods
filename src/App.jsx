@@ -190,7 +190,7 @@ export default function DhanushyaSeafoods() {
         </div>
       </section>
 
-     {/* QUOTE */}
+      {/* QUOTE */}
       <section id="story" style={{ padding:"110px 6%",background:"#132420" }}>
         <div style={{ maxWidth:920,margin:"0 auto" }}>
           <div style={{ maxWidth:820 }}>
@@ -199,7 +199,7 @@ export default function DhanushyaSeafoods() {
               "Between the boat and your kitchen, there's <em style={{ color:"#E0B94A" }}>just us</em> — no warehouse, no middlemen."
             </div>
             <div className="sans" style={{ fontSize:13,color:"#8FA39C" }}>
-              Every pack carries its own timestamp — caught, cleaned, and packed the same day, not shipped from a warehouse.
+              Every pack carries its own timestamp — caught, cleaned, and packed the same day.
             </div>
           </div>
         </div>
